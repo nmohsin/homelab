@@ -6,6 +6,7 @@
     ./modules/ssh.nix
     ./modules/packages.nix
     ./modules/networking.nix
+    ./modules/zfs.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
