@@ -12,6 +12,14 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  hardware.enableRedistributableFirmware = true;
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   system.stateVersion = "25.11";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
