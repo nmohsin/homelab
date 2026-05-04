@@ -8,7 +8,7 @@
     ./modules/networking.nix
   ];
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
