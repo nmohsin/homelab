@@ -25,7 +25,6 @@
     # Network tools
     curl
     wget
-    dig
     nmap
     traceroute
     iperf3
