@@ -8,6 +8,7 @@
 - LTS kernel required (not latest) due to ZFS compatibility
 - Two users: nadeem (wheel/docker, SSH key), fiifii (wheel)
 - Remote: git@github.com:nmohsin/homelab.git
+- Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
 
 ## Conventions
 
@@ -22,3 +23,4 @@
 - `boot.zfs.extraPools` will fail on rebuild if the pool doesn't exist yet; this is harmless before pool creation
 - `networking.hostId` in `modules/zfs.nix` is machine-specific — must match `head -c 8 /etc/machine-id`
 - User passwords are set imperatively with `passwd`, not in the nix config
+- Tailscale requires one-time `sudo tailscale up --ssh` after first rebuild to authenticate

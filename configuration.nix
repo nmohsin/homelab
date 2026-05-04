@@ -7,6 +7,7 @@
     ./modules/packages.nix
     ./modules/networking.nix
     ./modules/zfs.nix
+    ./modules/tailscale.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

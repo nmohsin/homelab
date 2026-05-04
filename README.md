@@ -20,6 +20,7 @@ modules/
   packages.nix            # System packages, zsh + oh-my-zsh
   networking.nix          # Hostname, firewall
   zfs.nix                 # ZFS support, auto-imports pool "tank"
+  tailscale.nix           # Tailscale VPN + Tailscale SSH
 ```
 
 ## Usage
@@ -47,6 +48,13 @@ zpool status          # Pool health
 zpool list            # Capacity overview
 zfs list              # Datasets and usage
 ```
+
+### SSH access
+
+- **Local network**: `ssh nadeem@<ip_address>`
+- **Anywhere via Tailscale**: `ssh nadeem@moyfii` (from any device on the Tailnet)
+
+After rebuilding with Tailscale, authenticate once: `sudo tailscale up --ssh`
 
 ## Bootstrap (fresh NixOS install)
 
