@@ -31,3 +31,5 @@
 - ProtonVPN conf requires IPv6 endpoint uncommented and IPv6 address removed from `Address` line — Gluetun doesn't support IPv6 interface addresses
 - `/data/downloads`, `/data/media/tv`, `/data/media/movies` must be owned by `root:media` with permissions 775 and setgid bit — run after fresh setup: `sudo chown -R root:media /data/downloads /data/media/tv /data/media/movies && sudo chmod -R 775 /data/downloads /data/media/tv /data/media/movies && sudo chmod g+s /data/downloads /data/media/tv /data/media/movies`
 - qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host
+- Sonarr and Radarr both need a remote path mapping set in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
+- On a fresh setup, pull the qBittorrent image before starting Gluetun — otherwise the pull fails through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
