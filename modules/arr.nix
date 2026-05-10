@@ -5,8 +5,6 @@
   services.sonarr.enable = true;
   services.radarr.enable = true;
   services.jellyfin.enable = true;
-  services.qbittorrent.enable = true;
-
   networking.firewall.allowedTCPPorts = [
     8096  # Jellyfin
     8989  # Sonarr

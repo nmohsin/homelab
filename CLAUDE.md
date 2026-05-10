@@ -24,3 +24,5 @@
 - `networking.hostId` in `modules/zfs.nix` is machine-specific — must match `head -c 8 /etc/machine-id`
 - User passwords are set imperatively with `passwd`, not in the nix config
 - Tailscale requires one-time `sudo tailscale up --ssh` after first rebuild to authenticate
+- ProtonVPN conf at `/etc/secrets/protonvpn.conf` — the `DNS` line must be removed, and `AllowedIPs` must exclude `100.64.0.0/10` (Tailscale range). Both were causing Tailscale to break on startup
+- WireGuard (protonvpn) is configured to start after `tailscaled` to avoid ordering conflicts on boot
