@@ -6,6 +6,10 @@
   services.radarr.enable = true;
   services.jellyfin.enable = true;
 
+  users.users.sonarr.extraGroups = [ "media" ];
+  users.users.radarr.extraGroups = [ "media" ];
+  users.users.jellyfin.extraGroups = [ "media" ];
+
   virtualisation.oci-containers.containers.flaresolverr = {
     image = "ghcr.io/flaresolverr/flaresolverr";
     environment = {

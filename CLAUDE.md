@@ -9,6 +9,8 @@
 - Two users: nadeem (wheel/docker, SSH key), fiifii (wheel)
 - Remote: git@github.com:nmohsin/homelab.git
 - Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
+- ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
+- Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
 
 ## Conventions
 
@@ -26,3 +28,6 @@
 - Tailscale requires one-time `sudo tailscale up --ssh` after first rebuild to authenticate
 - ProtonVPN conf at `/etc/secrets/protonvpn.conf` — the `DNS` line must be removed, and `AllowedIPs` must exclude `100.64.0.0/10` (Tailscale range). Both were causing Tailscale to break on startup
 - WireGuard (protonvpn) is configured to start after `tailscaled` to avoid ordering conflicts on boot
+- ProtonVPN conf requires IPv6 endpoint uncommented and IPv6 address removed from `Address` line — Gluetun doesn't support IPv6 interface addresses
+- `/data/downloads`, `/data/media/tv`, `/data/media/movies` must be owned by `root:media` with permissions 775 and setgid bit — run after fresh setup: `sudo chown -R root:media /data/downloads /data/media/tv /data/media/movies && sudo chmod -R 775 /data/downloads /data/media/tv /data/media/movies && sudo chmod g+s /data/downloads /data/media/tv /data/media/movies`
+- qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host

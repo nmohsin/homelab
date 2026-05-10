@@ -15,5 +15,7 @@
     extraGroups = [ "wheel" "networkmanager" ];
   };
 
+  users.groups.media.gid = 994;
+
   security.sudo.wheelNeedsPassword = true;
 }

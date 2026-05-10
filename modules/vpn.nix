@@ -24,7 +24,7 @@
     image = "lscr.io/linuxserver/qbittorrent";
     environment = {
       PUID = "1000";
-      PGID = "1000";
+      PGID = "994";
       TZ = "America/Los_Angeles";
       WEBUI_PORT = "8080";
     };
