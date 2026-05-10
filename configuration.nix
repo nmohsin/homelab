@@ -8,6 +8,8 @@
     ./modules/networking.nix
     ./modules/zfs.nix
     ./modules/tailscale.nix
+    ./modules/vpn.nix
+    ./modules/arr.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
