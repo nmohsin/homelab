@@ -9,6 +9,8 @@
     environment = {
       VPN_SERVICE_PROVIDER = "custom";
       VPN_TYPE = "wireguard";
+      VPN_PORT_FORWARDING = "on";
+      VPN_PORT_FORWARDING_PROVIDER = "protonvpn";
     };
     volumes = [
       "/etc/secrets/protonvpn.conf:/gluetun/wireguard/wg0.conf:ro"
