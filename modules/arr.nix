@@ -6,6 +6,11 @@
   services.radarr.enable = true;
   services.jellyfin.enable = true;
 
+  systemd.services.prowlarr.after = [ "zfs-import-tank.service" ];
+  systemd.services.sonarr.after = [ "zfs-import-tank.service" ];
+  systemd.services.radarr.after = [ "zfs-import-tank.service" ];
+  systemd.services.jellyfin.after = [ "zfs-import-tank.service" ];
+
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.radarr.extraGroups = [ "media" ];
   users.users.jellyfin.extraGroups = [ "media" ];
