@@ -10,6 +10,7 @@
 - Remote: git@github.com:nmohsin/homelab.git
 - Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
 - ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
+- ArrStack ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
 - Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
 
 ## Conventions

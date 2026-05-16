@@ -24,7 +24,8 @@
     ports = [ "8191:8191" ];
   };
 
-  networking.firewall.allowedTCPPorts = [
+  # Restrict service ports to Tailscale interface only — not reachable from local network
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
     8096  # Jellyfin
     8989  # Sonarr
     7878  # Radarr
