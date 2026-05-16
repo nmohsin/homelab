@@ -1,4 +1,4 @@
-{ config, pkgs, ports, ... }:
+{ ports, ... }:
 
 {
   services.prowlarr.enable = true;

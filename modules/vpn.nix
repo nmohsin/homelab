@@ -1,4 +1,4 @@
-{ config, pkgs, ports, ... }:
+{ ports, ... }:
 
 {
   virtualisation.docker.enable = true;

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   # Decrypt secrets using the machine's SSH host key — no user interaction needed at boot
