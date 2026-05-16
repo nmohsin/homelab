@@ -64,6 +64,9 @@ in
 
   virtualisation.oci-containers.containers.homepage = {
     image = "ghcr.io/gethomepage/homepage:latest";
+    environment = {
+      HOMEPAGE_ALLOWED_HOSTS = "moyfii:3000";
+    };
     volumes = [
       "/var/lib/homepage:/app/config"
     ];
