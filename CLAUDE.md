@@ -11,7 +11,7 @@
 - Remote: git@github.com:nmohsin/homelab.git
 - Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
 - ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
-- Homepage dashboard on port 3000 — all service links use `http://moyfii:PORT` (Tailscale MagicDNS)
+- Homepage dashboard on port 3000 — all service links use `http://moyfii.tail083295.ts.net:PORT`
 - ZED pool health alerts → ntfy.sh topic `homelab-moyfii-zfs` (public topic — see gotcha below)
 - All service ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
 - Secrets managed via sops-nix — ProtonVPN config is encrypted in `secrets/protonvpn.conf`, decrypted at boot using the homelab SSH host key. SOPS age key stored in Bitwarden and `~/.config/sops/age/keys.txt` on Mac.

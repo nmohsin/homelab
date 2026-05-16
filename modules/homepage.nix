@@ -1,32 +1,34 @@
 { config, pkgs, ... }:
 
 let
+  host = "moyfii.tail083295.ts.net";
+
   servicesYaml = pkgs.writeText "homepage-services.yaml" ''
     - Media:
         - Jellyfin:
             icon: jellyfin.png
-            href: http://moyfii:8096
+            href: http://${host}:8096
             description: Media server
         - Sonarr:
             icon: sonarr.png
-            href: http://moyfii:8989
+            href: http://${host}:8989
             description: TV shows
         - Radarr:
             icon: radarr.png
-            href: http://moyfii:7878
+            href: http://${host}:7878
             description: Movies
         - Prowlarr:
             icon: prowlarr.png
-            href: http://moyfii:9696
+            href: http://${host}:9696
             description: Indexers
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png
-            href: http://moyfii:8080
+            href: http://${host}:8080
             description: Torrent client (via ProtonVPN)
         - FlareSolverr:
             icon: flaresolverr.png
-            href: http://moyfii:8191
+            href: http://${host}:8191
             description: Cloudflare bypass
   '';
 
@@ -65,7 +67,7 @@ in
   virtualisation.oci-containers.containers.homepage = {
     image = "ghcr.io/gethomepage/homepage:latest";
     environment = {
-      HOMEPAGE_ALLOWED_HOSTS = "moyfii:3000,moyfii.tail083295.ts.net:3000";
+      HOMEPAGE_ALLOWED_HOSTS = "moyfii:3000,${host}:3000";
     };
     volumes = [
       "/var/lib/homepage:/app/config"
