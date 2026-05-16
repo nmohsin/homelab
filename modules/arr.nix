@@ -1,17 +1,23 @@
 {ports, ...}: {
-  services.prowlarr.enable = true;
-  services.sonarr.enable = true;
-  services.radarr.enable = true;
-  services.jellyfin.enable = true;
+  services = {
+    prowlarr.enable = true;
+    sonarr.enable = true;
+    radarr.enable = true;
+    jellyfin.enable = true;
+  };
 
-  systemd.services.prowlarr.after = ["zfs-import-tank.service"];
-  systemd.services.sonarr.after = ["zfs-import-tank.service"];
-  systemd.services.radarr.after = ["zfs-import-tank.service"];
-  systemd.services.jellyfin.after = ["zfs-import-tank.service"];
+  systemd.services = {
+    prowlarr.after = ["zfs-import-tank.service"];
+    sonarr.after = ["zfs-import-tank.service"];
+    radarr.after = ["zfs-import-tank.service"];
+    jellyfin.after = ["zfs-import-tank.service"];
+  };
 
-  users.users.sonarr.extraGroups = ["media"];
-  users.users.radarr.extraGroups = ["media"];
-  users.users.jellyfin.extraGroups = ["media"];
+  users.users = {
+    sonarr.extraGroups = ["media"];
+    radarr.extraGroups = ["media"];
+    jellyfin.extraGroups = ["media"];
+  };
 
   virtualisation.oci-containers.containers.flaresolverr = {
     image = "ghcr.io/flaresolverr/flaresolverr";

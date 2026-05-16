@@ -12,35 +12,35 @@
     ./modules/homepage.nix
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelPackages = pkgs.linuxPackages;
+  };
 
   hardware.enableRedistributableFirmware = true;
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      auto-optimise-store = true;
+    };
   };
 
   system.stateVersion = "25.11";
-
-  nix.settings = {
-    experimental-features = ["nix-command" "flakes"];
-    auto-optimise-store = true;
-  };
 
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
 
   programs.git.enable = true;
 
-  environment.variables = {
-    EDITOR = "vim";
-  };
-
-  environment.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake '/home/nadeem/homelab#homelab'";
+  environment = {
+    variables.EDITOR = "vim";
+    shellAliases.rebuild = "sudo nixos-rebuild switch --flake '/home/nadeem/homelab#homelab'";
   };
 }

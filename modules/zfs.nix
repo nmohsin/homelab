@@ -19,9 +19,11 @@
       "https://ntfy.sh/${ntfyTopic}" || true
   '';
 in {
-  boot.supportedFilesystems = ["zfs"];
-  boot.zfs.forceImportRoot = false;
-  boot.zfs.extraPools = ["tank"];
+  boot = {
+    supportedFilesystems = ["zfs"];
+    zfs.forceImportRoot = false;
+    zfs.extraPools = ["tank"];
+  };
 
   # Generate with: head -c 8 /etc/machine-id
   # Required by ZFS on NixOS — set this after running the command on the target machine
