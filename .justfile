@@ -8,7 +8,7 @@ fmt:
     nix fmt .
 
 lint:
-    statix check .
+    statix check . --ignore 'hardware-configuration.nix'
 
 up:
     nix flake update
