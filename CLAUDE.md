@@ -1,47 +1,74 @@
 # Homelab NixOS Config
 
-## Key facts
+## Identity
 
 - Hostname: moyfii
 - NixOS 25.11, flakes enabled
-- ZFS RAIDZ1 pool "tank" on 4x WD Red SSDs, mounted at /data
-- ZFS auto-snapshots enabled: 7 daily, 4 weekly, 3 monthly (frequent/hourly disabled — media workload)
-- LTS kernel required (not latest) due to ZFS compatibility
-- Two users: nadeem (wheel/docker, SSH key), fiifii (wheel)
 - Remote: git@github.com:nmohsin/homelab.git
-- Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
-- ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
-- Homepage dashboard on port 3000 — all service links use `http://moyfii.tail083295.ts.net:PORT`
-- ZED pool health alerts → ntfy.sh topic `homelab-moyfii-zfs` (public topic — see gotcha below)
-- All service ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
-- Secrets managed via sops-nix — ProtonVPN config is encrypted in `secrets/protonvpn.conf`, decrypted at boot using the homelab SSH host key. SOPS age key stored in Bitwarden and `~/.config/sops/age/keys.txt` on Mac.
-- Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
+- Rebuild: `sudo nixos-rebuild switch --flake '.#homelab'` or alias `rebuild`
 
-## Documentation
+## Architecture
 
-- Keep CLAUDE.md and README.md up-to-date whenever system changes are made — new services, gotchas discovered, config conventions added or changed
+- Config is modular: one file per concern in `modules/`
+- All service ports open only on `tailscale0` — unreachable from LAN, only via Tailnet
+- Port numbers defined as `specialArgs.ports` in `flake.nix`, passed to modules
+- Docker managed via `virtualisation.oci-containers` (systemd lifecycle, not docker-compose)
+- Secrets via sops-nix — encrypted with age, decrypted at boot using SSH host key
+
+## Services
+
+- **Native NixOS**: Sonarr, Radarr, Prowlarr, Jellyfin — all in `arr.nix`
+- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Homepage (`homepage.nix`)
+- qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
+- Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
+- All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
+
+## Users and permissions
+
+- nadeem: wheel, docker, networkmanager, SSH key auth
+- fiifii: wheel, networkmanager, password auth
+- media group GID 994: sonarr, radarr, jellyfin users + qBittorrent container (PGID=994)
+- `/data/downloads`, `/data/media/tv`, `/data/media/movies`: owned `root:media`, mode 775, setgid
 
 ## Conventions
 
-- Config is modular: one file per concern in `modules/`
-- `hardware-configuration.nix` is machine-generated — don't hand-edit
+- One module per concern in `modules/`
+- `hardware-configuration.nix` is machine-generated — never hand-edit
 - System packages go in `modules/packages.nix`
-- Rebuild command: `sudo nixos-rebuild switch --flake '.#homelab'` (quote the `#` for zsh), or just `rebuild` from anywhere once the alias is active
+- New service ports: add to `specialArgs.ports` in `flake.nix`, reference as `ports.<name>` in module
+- New firewall openings: add to `networking.firewall.interfaces.tailscale0.allowedTCPPorts` in the relevant module
+- Keep CLAUDE.md and README.md updated when system changes are made
 
-## Gotchas
+## Gotchas: ZFS
 
-- ZFS kernel modules must match the running kernel — changing kernel packages requires a reboot
-- `boot.zfs.extraPools` will fail on rebuild if the pool doesn't exist yet; this is harmless before pool creation
+- LTS kernel required (`pkgs.linuxPackages`, not `pkgs.linuxPackages_latest`) — ZFS modules must match running kernel
+- Changing kernel packages requires a reboot (module mismatch otherwise)
+- `boot.zfs.extraPools` fails harmlessly on rebuild if the pool doesn't exist yet
 - `networking.hostId` in `modules/zfs.nix` is machine-specific — must match `head -c 8 /etc/machine-id`
-- User passwords are set imperatively with `passwd`, not in the nix config
-- Tailscale requires one-time `sudo tailscale up --ssh` after first rebuild to authenticate
-- ProtonVPN conf at `/etc/secrets/protonvpn.conf` — the `DNS` line must be removed, and `AllowedIPs` must exclude `100.64.0.0/10` (Tailscale range). Both were causing Tailscale to break on startup
-- WireGuard (protonvpn) is configured to start after `tailscaled` to avoid ordering conflicts on boot
-- ProtonVPN conf requires IPv6 endpoint uncommented and IPv6 address removed from `Address` line — Gluetun doesn't support IPv6 interface addresses
-- `/data/downloads`, `/data/media/tv`, `/data/media/movies` must be owned by `root:media` with permissions 775 and setgid bit — run after fresh setup: `sudo chown -R root:media /data/downloads /data/media/tv /data/media/movies && sudo chmod -R 775 /data/downloads /data/media/tv /data/media/movies && sudo chmod g+s /data/downloads /data/media/tv /data/media/movies`
+- ZFS auto-snapshots: 7 daily, 4 weekly, 3 monthly (frequent/hourly disabled — media workload)
+
+## Gotchas: VPN / ProtonVPN
+
+- ProtonVPN WireGuard conf requires manual edits: (1) remove DNS line, (2) remove IPv6 from Address, (3) uncomment IPv6 endpoint
+- `AllowedIPs` must exclude `100.64.0.0/10` (Tailscale CGNAT range) — including it breaks Tailscale
+- Gluetun/WireGuard configured to start after `tailscaled` to avoid boot ordering conflicts
+- On fresh setup, pull qBittorrent image before Gluetun starts — pulls fail through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
+
+## Gotchas: Docker / Containers
+
+- Never use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd; combining both prevents containers from starting
 - qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host
-- Sonarr and Radarr both need a remote path mapping set in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
-- On a fresh setup, pull the qBittorrent image before starting Gluetun — otherwise the pull fails through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
-- Do not use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd already, and combining both causes a conflict that prevents containers from starting
-- ntfy.sh topic `homelab-moyfii-zfs` is public — anyone who knows the name can subscribe. If you want privacy, self-host ntfy or change the topic name to something unguessable in `modules/zfs.nix`
-- Homepage config lives in `/var/lib/homepage/` — written by a NixOS activation script on every rebuild from `modules/homepage.nix`. Edit that file to change services; UI-driven changes won't persist across rebuilds.
+
+## Gotchas: Services
+
+- Sonarr and Radarr need remote path mappings in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
+- Homepage config at `/var/lib/homepage/` is overwritten on every rebuild — edit `modules/homepage.nix`, not the container filesystem
+
+## Gotchas: Users / Auth
+
+- User passwords are set imperatively with `passwd`, not in nix config
+- Tailscale requires one-time `sudo tailscale up --ssh` after first rebuild
+
+## Gotchas: Monitoring
+
+- ZED alerts go to ntfy.sh topic `homelab-moyfii-zfs` — this topic is public; change in `modules/zfs.nix` or self-host ntfy for privacy
