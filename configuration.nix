@@ -40,4 +40,8 @@
   environment.variables = {
     EDITOR = "vim";
   };
+
+  environment.shellAliases = {
+    rebuild = "sudo nixos-rebuild switch --flake '/home/nadeem/homelab#homelab'";
+  };
 }

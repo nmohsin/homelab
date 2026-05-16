@@ -24,7 +24,7 @@
 - Config is modular: one file per concern in `modules/`
 - `hardware-configuration.nix` is machine-generated — don't hand-edit
 - System packages go in `modules/packages.nix`
-- Rebuild command: `sudo nixos-rebuild switch --flake '.#homelab'` (quote the `#` for zsh)
+- Rebuild command: `sudo nixos-rebuild switch --flake '.#homelab'` (quote the `#` for zsh), or just `rebuild` from anywhere once the alias is active
 
 ## Gotchas
 
