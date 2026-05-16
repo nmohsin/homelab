@@ -5,8 +5,7 @@
     volumes = [
       "/var/lib/uptime-kuma:/app/data"
     ];
-    ports = [ "${toString ports.uptimekuma}:3001" ];
-    extraOptions = [ ];
+    extraOptions = [ "--network=host" ];
   };
 
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ ports.uptimekuma ];
