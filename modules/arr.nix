@@ -15,6 +15,7 @@
         PrivateTmp = true;
         ProtectHome = true;
         ProtectSystem = "strict";
+        ReadWritePaths = [ "/var/lib/prowlarr" ];
       };
     };
     sonarr = {
@@ -25,6 +26,7 @@
         ProtectHome = true;
         ProtectSystem = "strict";
         ReadWritePaths = [
+          "/var/lib/sonarr"
           "/data/downloads"
           "/data/media/tv"
         ];
@@ -38,6 +40,7 @@
         ProtectHome = true;
         ProtectSystem = "strict";
         ReadWritePaths = [
+          "/var/lib/radarr"
           "/data/downloads"
           "/data/media/movies"
         ];
@@ -50,6 +53,10 @@
         PrivateTmp = true;
         ProtectHome = true;
         ProtectSystem = "strict";
+        ReadWritePaths = [
+          "/var/lib/jellyfin"
+          "/var/cache/jellyfin"
+        ];
         ReadOnlyPaths = [ "/data/media" ];
       };
     };
