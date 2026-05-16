@@ -8,10 +8,51 @@
   };
 
   systemd.services = {
-    prowlarr.after = [ "zfs-import-tank.service" ];
-    sonarr.after = [ "zfs-import-tank.service" ];
-    radarr.after = [ "zfs-import-tank.service" ];
-    jellyfin.after = [ "zfs-import-tank.service" ];
+    prowlarr = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+      };
+    };
+    sonarr = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ReadWritePaths = [
+          "/data/downloads"
+          "/data/media/tv"
+        ];
+      };
+    };
+    radarr = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ReadWritePaths = [
+          "/data/downloads"
+          "/data/media/movies"
+        ];
+      };
+    };
+    jellyfin = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ReadOnlyPaths = [ "/data/media" ];
+      };
+    };
   };
 
   users.users = {
