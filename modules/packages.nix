@@ -59,7 +59,7 @@
     lazygit
 
     # Nix tooling
-    alejandra
+    nixfmt-rfc-style
     statix
     just
 
