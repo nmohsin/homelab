@@ -55,6 +55,10 @@
     delta
     lazygit
 
+    # Nix tooling
+    alejandra
+    statix
+
     # Nice to haves
     shellcheck
     entr
