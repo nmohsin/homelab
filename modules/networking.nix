@@ -1,11 +1,9 @@
-{ ... }:
-
-{
+{...}: {
   networking = {
     hostName = "moyfii";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
+      allowedTCPPorts = [22];
     };
   };
 }

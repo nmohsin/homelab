@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   # ntfy.sh is a public service — anyone who knows this topic can subscribe.
   # Use a hard-to-guess name or run a self-hosted ntfy instance.
   ntfyTopic = "homelab-moyfii-zfs";
@@ -16,12 +18,10 @@ let
       -d "$BODY" \
       "https://ntfy.sh/${ntfyTopic}" || true
   '';
-in
-
-{
-  boot.supportedFilesystems = [ "zfs" ];
+in {
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.forceImportRoot = false;
-  boot.zfs.extraPools = [ "tank" ];
+  boot.zfs.extraPools = ["tank"];
 
   # Generate with: head -c 8 /etc/machine-id
   # Required by ZFS on NixOS — set this after running the command on the target machine
@@ -32,11 +32,11 @@ in
   # Frequent and hourly snapshots are disabled — not useful for this workload.
   services.zfs.autoSnapshot = {
     enable = true;
-    frequent = 0;  # disable 15-minute snapshots
-    hourly = 0;    # disable hourly snapshots
-    daily = 7;     # keep 7 daily snapshots
-    weekly = 4;    # keep 4 weekly snapshots
-    monthly = 3;   # keep 3 monthly snapshots
+    frequent = 0; # disable 15-minute snapshots
+    hourly = 0; # disable hourly snapshots
+    daily = 7; # keep 7 daily snapshots
+    weekly = 4; # keep 4 weekly snapshots
+    monthly = 3; # keep 3 monthly snapshots
   };
 
   services.zfs.zed.settings = {

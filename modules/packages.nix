@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     # Terminal utilities
     vim
@@ -72,7 +74,7 @@
     enable = true;
     ohMyZsh = {
       enable = true;
-      plugins = [ "git" "sudo" "fzf" "zoxide" "docker" ];
+      plugins = ["git" "sudo" "fzf" "zoxide" "docker"];
       theme = "robbyrussell";
     };
   };
