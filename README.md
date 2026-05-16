@@ -95,14 +95,26 @@ Edit configs, then on the server:
 ```bash
 cd ~/homelab
 git pull
-rebuild                     # alias for: sudo nixos-rebuild switch --flake '/home/nadeem/homelab#homelab'
+just deploy
 ```
 
-Or without the alias:
+Or without just: `rebuild` (shell alias) or `sudo nixos-rebuild switch --flake '.#homelab'`.
 
-```bash
-sudo nixos-rebuild switch --flake '.#homelab'
-```
+### Common operations
+
+All common operations are in `.justfile`. Run `just` to list them:
+
+| Command | What it does |
+|---------|-------------|
+| `just deploy` | Rebuild and switch |
+| `just fmt` | Format all .nix files (alejandra) |
+| `just lint` | Lint all .nix files (statix) |
+| `just up` | Update flake.lock (nixpkgs, sops-nix) |
+| `just gc` | Garbage collect old generations |
+| `just repair` | Verify and repair the nix store |
+| `just sops-edit` | Edit the encrypted ProtonVPN config |
+| `just sops-rotate` | Rotate all secret encryption keys |
+| `just sops-update` | Update encryption keys in all secrets |
 
 ### Rollback
 

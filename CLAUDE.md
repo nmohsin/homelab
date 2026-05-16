@@ -5,7 +5,7 @@
 - Hostname: moyfii
 - NixOS 25.11, flakes enabled
 - Remote: git@github.com:nmohsin/homelab.git
-- Rebuild: `sudo nixos-rebuild switch --flake '.#homelab'` or alias `rebuild`
+- Rebuild: `just deploy` (or `sudo nixos-rebuild switch --flake '.#homelab'`)
 
 ## Architecture
 
@@ -32,6 +32,7 @@
 
 ## Conventions
 
+- Common operations are in `.justfile` — run `just` to list them
 - One module per concern in `modules/`
 - `hardware-configuration.nix` is machine-generated — never hand-edit
 - System packages go in `modules/packages.nix`

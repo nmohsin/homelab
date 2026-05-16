@@ -58,6 +58,7 @@
     # Nix tooling
     alejandra
     statix
+    just
 
     # Nice to haves
     shellcheck
