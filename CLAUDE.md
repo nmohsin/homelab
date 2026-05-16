@@ -5,6 +5,7 @@
 - Hostname: moyfii
 - NixOS 25.11, flakes enabled
 - ZFS RAIDZ1 pool "tank" on 4x WD Red SSDs, mounted at /data
+- ZFS auto-snapshots enabled: 7 daily, 4 weekly, 3 monthly (frequent/hourly disabled — media workload)
 - LTS kernel required (not latest) due to ZFS compatibility
 - Two users: nadeem (wheel/docker, SSH key), fiifii (wheel)
 - Remote: git@github.com:nmohsin/homelab.git

@@ -47,6 +47,7 @@ sudo nixos-rebuild switch --rollback
 zpool status          # Pool health
 zpool list            # Capacity overview
 zfs list              # Datasets and usage
+zfs list -t snapshot  # List all snapshots
 ```
 
 ### SSH access
