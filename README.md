@@ -57,6 +57,32 @@ zfs list -t snapshot  # List all snapshots
 
 After rebuilding with Tailscale, authenticate once: `sudo tailscale up --ssh`
 
+### Updating the ProtonVPN config
+
+If you download a new WireGuard config from ProtonVPN, apply the same manual edits first (remove `DNS` line, remove IPv6 address from `Address`, uncomment IPv6 endpoint — see CLAUDE.md gotchas). Then on your Mac:
+
+```bash
+# Copy new config from homelab (or edit directly)
+scp nadeem@moyfii:/etc/secrets/protonvpn.conf /tmp/protonvpn.conf
+
+# Replace, encrypt, and commit
+cp /tmp/protonvpn.conf secrets/protonvpn.conf
+sops --encrypt --in-place secrets/protonvpn.conf
+git add secrets/protonvpn.conf
+git commit -m "Update encrypted ProtonVPN config"
+git push
+```
+
+Then on the homelab:
+```bash
+git pull
+sudo nixos-rebuild switch --flake '.#homelab'
+```
+
+### Secrets management
+
+Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix). The SOPS age key lives in `~/.config/sops/age/keys.txt` on your Mac and in Bitwarden. The homelab decrypts secrets at boot using its SSH host key — no manual steps needed after a rebuild.
+
 ## Bootstrap (fresh NixOS install)
 
 1. Install NixOS with default config

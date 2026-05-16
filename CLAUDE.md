@@ -12,6 +12,7 @@
 - Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
 - ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
 - ArrStack ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
+- Secrets managed via sops-nix — ProtonVPN config is encrypted in `secrets/protonvpn.conf`, decrypted at boot using the homelab SSH host key. SOPS age key stored in Bitwarden and `~/.config/sops/age/keys.txt` on Mac.
 - Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
 
 ## Documentation

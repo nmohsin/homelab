@@ -1,10 +1,10 @@
 keys:
-  - &mac age17cdu5x4268zlemxus67nnzkxsrsg0gvxzdzhc92j9up30p8jd9sqlzc5hf
-  - &homelab_host age1xhqkt7gplum7t3na9wd68t3ld9re7k28pl978vdhgeu79m3c8vns0tdxgu
+  - &sops_age_key age17cdu5x4268zlemxus67nnzkxsrsg0gvxzdzhc92j9up30p8jd9sqlzc5hf
+  - &homelab_host_ssh_key age1xhqkt7gplum7t3na9wd68t3ld9re7k28pl978vdhgeu79m3c8vns0tdxgu
 
 creation_rules:
   - path_regex: secrets/.*
     key_groups:
       - age:
-          - *mac
-          - *homelab_host
+          - *sops_age_key
+          - *homelab_host_ssh_key
