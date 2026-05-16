@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, ports, ... }:
 
 {
   virtualisation.docker.enable = true;
@@ -15,7 +15,7 @@
     volumes = [
       "/etc/secrets/protonvpn.conf:/gluetun/wireguard/wg0.conf:ro"
     ];
-    ports = [ "8080:8080" ];
+    ports = [ "${toString ports.qbittorrent}:${toString ports.qbittorrent}" ];
     extraOptions = [
       "--cap-add=NET_ADMIN"
       "--device=/dev/net/tun"

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, ports, ... }:
 
 {
   services.prowlarr.enable = true;
@@ -21,17 +21,17 @@
       LOG_LEVEL = "info";
       TZ = "America/Los_Angeles";
     };
-    ports = [ "8191:8191" ];
+    ports = [ "${toString ports.flaresolverr}:${toString ports.flaresolverr}" ];
     extraOptions = [];
   };
 
   # Restrict service ports to Tailscale interface only — not reachable from local network
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-    8096  # Jellyfin
-    8989  # Sonarr
-    7878  # Radarr
-    9696  # Prowlarr
-    8080  # qBittorrent
-    8191  # FlareSolverr
+    ports.jellyfin
+    ports.sonarr
+    ports.radarr
+    ports.prowlarr
+    ports.qbittorrent
+    ports.flaresolverr
   ];
 }

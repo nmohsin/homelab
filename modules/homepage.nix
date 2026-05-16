@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, ports, ... }:
 
 let
   host = "moyfii.tail083295.ts.net";
@@ -7,28 +7,28 @@ let
     - Media:
         - Jellyfin:
             icon: jellyfin.png
-            href: http://${host}:8096
+            href: http://${host}:${toString ports.jellyfin}
             description: Media server
         - Sonarr:
             icon: sonarr.png
-            href: http://${host}:8989
+            href: http://${host}:${toString ports.sonarr}
             description: TV shows
         - Radarr:
             icon: radarr.png
-            href: http://${host}:7878
+            href: http://${host}:${toString ports.radarr}
             description: Movies
         - Prowlarr:
             icon: prowlarr.png
-            href: http://${host}:9696
+            href: http://${host}:${toString ports.prowlarr}
             description: Indexers
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png
-            href: http://${host}:8080
+            href: http://${host}:${toString ports.qbittorrent}
             description: Torrent client (via ProtonVPN)
         - FlareSolverr:
             icon: flaresolverr.png
-            href: http://${host}:8191
+            href: http://${host}:${toString ports.flaresolverr}
             description: Cloudflare bypass
   '';
 
@@ -67,14 +67,14 @@ in
   virtualisation.oci-containers.containers.homepage = {
     image = "ghcr.io/gethomepage/homepage:latest";
     environment = {
-      HOMEPAGE_ALLOWED_HOSTS = "moyfii:3000,${host}:3000";
+      HOMEPAGE_ALLOWED_HOSTS = "moyfii:${toString ports.homepage},${host}:${toString ports.homepage}";
     };
     volumes = [
       "/var/lib/homepage:/app/config"
     ];
-    ports = [ "3000:3000" ];
+    ports = [ "${toString ports.homepage}:${toString ports.homepage}" ];
     extraOptions = [];
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 3000 ];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ ports.homepage ];
 }

@@ -12,6 +12,17 @@
   outputs = { self, nixpkgs, sops-nix }: {
     nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {
+        ports = {
+          jellyfin    = 8096;
+          sonarr      = 8989;
+          radarr      = 7878;
+          prowlarr    = 9696;
+          qbittorrent = 8080;
+          flaresolverr = 8191;
+          homepage    = 3000;
+        };
+      };
       modules = [
         sops-nix.nixosModules.sops
         ./hardware-configuration.nix
