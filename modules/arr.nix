@@ -1,4 +1,5 @@
-{ports, ...}: {
+{ ports, ... }:
+{
   services = {
     prowlarr.enable = true;
     sonarr.enable = true;
@@ -7,16 +8,16 @@
   };
 
   systemd.services = {
-    prowlarr.after = ["zfs-import-tank.service"];
-    sonarr.after = ["zfs-import-tank.service"];
-    radarr.after = ["zfs-import-tank.service"];
-    jellyfin.after = ["zfs-import-tank.service"];
+    prowlarr.after = [ "zfs-import-tank.service" ];
+    sonarr.after = [ "zfs-import-tank.service" ];
+    radarr.after = [ "zfs-import-tank.service" ];
+    jellyfin.after = [ "zfs-import-tank.service" ];
   };
 
   users.users = {
-    sonarr.extraGroups = ["media"];
-    radarr.extraGroups = ["media"];
-    jellyfin.extraGroups = ["media"];
+    sonarr.extraGroups = [ "media" ];
+    radarr.extraGroups = [ "media" ];
+    jellyfin.extraGroups = [ "media" ];
   };
 
   virtualisation.oci-containers.containers.flaresolverr = {
@@ -25,8 +26,8 @@
       LOG_LEVEL = "info";
       TZ = "America/Los_Angeles";
     };
-    ports = ["${toString ports.flaresolverr}:${toString ports.flaresolverr}"];
-    extraOptions = [];
+    ports = [ "${toString ports.flaresolverr}:${toString ports.flaresolverr}" ];
+    extraOptions = [ ];
   };
 
   # Restrict service ports to Tailscale interface only — not reachable from local network

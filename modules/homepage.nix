@@ -3,7 +3,8 @@
   pkgs,
   ports,
   ...
-}: let
+}:
+let
   host = "moyfii.tail083295.ts.net";
 
   servicesYaml = pkgs.writeText "homepage-services.yaml" ''
@@ -51,7 +52,8 @@
           timeStyle: short
           dateStyle: short
   '';
-in {
+in
+{
   # Write config as real files (not symlinks) so Homepage can write alongside them.
   # cp -f overwrites on every rebuild so Nix config stays the source of truth.
   system.activationScripts.homepage-config.text = ''
@@ -73,9 +75,9 @@ in {
     volumes = [
       "/var/lib/homepage:/app/config"
     ];
-    ports = ["${toString ports.homepage}:${toString ports.homepage}"];
-    extraOptions = [];
+    ports = [ "${toString ports.homepage}:${toString ports.homepage}" ];
+    extraOptions = [ ];
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ports.homepage];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ ports.homepage ];
 }

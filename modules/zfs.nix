@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   # ntfy.sh is a public service — anyone who knows this topic can subscribe.
   # Use a hard-to-guess name or run a self-hosted ntfy instance.
   ntfyTopic = "homelab-moyfii-zfs";
@@ -18,11 +19,12 @@
       -d "$BODY" \
       "https://ntfy.sh/${ntfyTopic}" || true
   '';
-in {
+in
+{
   boot = {
-    supportedFilesystems = ["zfs"];
+    supportedFilesystems = [ "zfs" ];
     zfs.forceImportRoot = false;
-    zfs.extraPools = ["tank"];
+    zfs.extraPools = [ "tank" ];
   };
 
   # Generate with: head -c 8 /etc/machine-id

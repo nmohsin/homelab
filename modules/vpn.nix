@@ -1,4 +1,5 @@
-{ports, ...}: {
+{ ports, ... }:
+{
   virtualisation = {
     docker.enable = true;
 
@@ -16,7 +17,7 @@
         volumes = [
           "/etc/secrets/protonvpn.conf:/gluetun/wireguard/wg0.conf:ro"
         ];
-        ports = ["${toString ports.qbittorrent}:${toString ports.qbittorrent}"];
+        ports = [ "${toString ports.qbittorrent}:${toString ports.qbittorrent}" ];
         extraOptions = [
           "--cap-add=NET_ADMIN"
           "--device=/dev/net/tun"
@@ -38,7 +39,7 @@
         extraOptions = [
           "--network=container:gluetun"
         ];
-        dependsOn = ["gluetun"];
+        dependsOn = [ "gluetun" ];
       };
     };
   };

@@ -9,31 +9,33 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    sops-nix,
-  }: {
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      sops-nix,
+    }:
+    {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
-    nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {
-        ports = {
-          jellyfin = 8096;
-          sonarr = 8989;
-          radarr = 7878;
-          prowlarr = 9696;
-          qbittorrent = 8080;
-          flaresolverr = 8191;
-          homepage = 3000;
+      nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          ports = {
+            jellyfin = 8096;
+            sonarr = 8989;
+            radarr = 7878;
+            prowlarr = 9696;
+            qbittorrent = 8080;
+            flaresolverr = 8191;
+            homepage = 3000;
+          };
         };
+        modules = [
+          sops-nix.nixosModules.sops
+          ./hardware-configuration.nix
+          ./configuration.nix
+        ];
       };
-      modules = [
-        sops-nix.nixosModules.sops
-        ./hardware-configuration.nix
-        ./configuration.nix
-      ];
     };
-  };
 }
