@@ -11,6 +11,7 @@
     ./modules/arr.nix
     ./modules/secrets.nix
     ./modules/homepage.nix
+    ./modules/monitoring.nix
     ./modules/auto-update.nix
   ];
 

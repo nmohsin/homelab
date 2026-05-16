@@ -29,6 +29,7 @@
             qbittorrent = 8080;
             flaresolverr = 8191;
             homepage = 3000;
+            uptimekuma = 3001;
           };
         };
         modules = [

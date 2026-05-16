@@ -14,14 +14,17 @@
 - Port numbers defined as `specialArgs.ports` in `flake.nix`, passed to modules
 - Docker managed via `virtualisation.oci-containers` (systemd lifecycle, not docker-compose)
 - Secrets via sops-nix — encrypted with age, decrypted at boot using SSH host key
+- Formatter: nixfmt-tree (defined in flake.nix). Linter: statix (run via `just lint`)
+- Native services have systemd hardening (ProtectSystem=strict, NoNewPrivileges, PrivateTmp, ProtectHome)
 
 ## Services
 
 - **Native NixOS**: Sonarr, Radarr, Prowlarr, Jellyfin — all in `arr.nix`
-- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Homepage (`homepage.nix`)
+- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
 - All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
+- Daily auto-upgrade from GitHub flake (07:00 ± 1h, no auto-reboot) — see `auto-update.nix`
 
 ## Users and permissions
 

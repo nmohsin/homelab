@@ -13,27 +13,39 @@ let
             icon: jellyfin.png
             href: http://${host}:${toString ports.jellyfin}
             description: Media server
+            ping: http://${host}:${toString ports.jellyfin}
         - Sonarr:
             icon: sonarr.png
             href: http://${host}:${toString ports.sonarr}
             description: TV shows
+            ping: http://${host}:${toString ports.sonarr}
         - Radarr:
             icon: radarr.png
             href: http://${host}:${toString ports.radarr}
             description: Movies
+            ping: http://${host}:${toString ports.radarr}
         - Prowlarr:
             icon: prowlarr.png
             href: http://${host}:${toString ports.prowlarr}
             description: Indexers
+            ping: http://${host}:${toString ports.prowlarr}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png
             href: http://${host}:${toString ports.qbittorrent}
             description: Torrent client (via ProtonVPN)
+            ping: http://${host}:${toString ports.qbittorrent}
         - FlareSolverr:
             icon: flaresolverr.png
             href: http://${host}:${toString ports.flaresolverr}
             description: Cloudflare bypass
+            ping: http://${host}:${toString ports.flaresolverr}
+    - Monitoring:
+        - Uptime Kuma:
+            icon: uptime-kuma.png
+            href: http://${host}:${toString ports.uptimekuma}
+            description: Service uptime monitoring
+            ping: http://${host}:${toString ports.uptimekuma}
   '';
 
   settingsYaml = pkgs.writeText "homepage-settings.yaml" ''
