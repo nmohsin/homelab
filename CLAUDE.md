@@ -75,4 +75,7 @@
 
 ## Gotchas: Monitoring
 
+- Uptime Kuma uses `--network=host` so it can reach all local services — monitor URLs use the Tailscale FQDN
+- Uptime Kuma monitors are configured in its web UI, not in Nix — data persists in `/var/lib/uptime-kuma`
+- Sonarr/Radarr/Prowlarr monitors should use the `/ping` endpoint (root URL returns non-200)
 - ZED alerts go to ntfy.sh topic `homelab-moyfii-zfs` — this topic is public; change in `modules/zfs.nix` or self-host ntfy for privacy

@@ -161,9 +161,13 @@ git checkout flake.lock
 rebuild
 ```
 
-### Monitoring (ZED / ntfy.sh)
+### Monitoring
 
-ZFS pool health events are sent to [ntfy.sh](https://ntfy.sh) topic `homelab-moyfii-zfs`. Subscribe from any device:
+**Uptime Kuma** — available at `http://moyfii.tail083295.ts.net:3001`. Monitors are configured in the web UI (not Nix). Data persists in `/var/lib/uptime-kuma`.
+
+Monitor URLs use the Tailscale FQDN (`http://moyfii.tail083295.ts.net:<port>`). Sonarr, Radarr, and Prowlarr should use the `/ping` endpoint — their root URL returns non-200.
+
+**ZFS health (ZED)** — pool events are sent to [ntfy.sh](https://ntfy.sh) topic `homelab-moyfii-zfs`. Subscribe from any device:
 
 ```bash
 # Terminal
