@@ -22,6 +22,7 @@
       TZ = "America/Los_Angeles";
     };
     ports = [ "8191:8191" ];
+    extraOptions = [ "--restart=unless-stopped" ];
   };
 
   # Restrict service ports to Tailscale interface only — not reachable from local network

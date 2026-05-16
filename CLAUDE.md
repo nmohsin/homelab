@@ -14,6 +14,10 @@
 - ArrStack ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
 - Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
 
+## Documentation
+
+- Keep CLAUDE.md and README.md up-to-date whenever system changes are made — new services, gotchas discovered, config conventions added or changed
+
 ## Conventions
 
 - Config is modular: one file per concern in `modules/`
