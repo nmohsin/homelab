@@ -19,7 +19,6 @@
     extraOptions = [
       "--cap-add=NET_ADMIN"
       "--device=/dev/net/tun"
-      "--restart=unless-stopped"
     ];
   };
 
@@ -37,7 +36,6 @@
     ];
     extraOptions = [
       "--network=container:gluetun"
-      "--restart=unless-stopped"
     ];
     dependsOn = [ "gluetun" ];
   };

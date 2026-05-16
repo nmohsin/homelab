@@ -40,3 +40,4 @@
 - qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host
 - Sonarr and Radarr both need a remote path mapping set in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
 - On a fresh setup, pull the qBittorrent image before starting Gluetun — otherwise the pull fails through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
+- Do not use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd already, and combining both causes a conflict that prevents containers from starting
