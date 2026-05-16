@@ -1,5 +1,23 @@
 { config, pkgs, ... }:
 
+let
+  # ntfy.sh is a public service — anyone who knows this topic can subscribe.
+  # Use a hard-to-guess name or run a self-hosted ntfy instance.
+  ntfyTopic = "homelab-moyfii-zfs";
+
+  zedNotify = pkgs.writeShellScript "zed-ntfy" ''
+    # ZED calls: prog [email_opts] email_addr < body
+    # Ignore args; use ZED environment variables for context instead.
+    BODY=$(cat)
+    TITLE="ZFS ''${ZEVENT_CLASS:-event} on ''${ZEVENT_POOL:-tank}"
+    ${pkgs.curl}/bin/curl -sf \
+      -H "Title: $TITLE" \
+      -H "Priority: high" \
+      -d "$BODY" \
+      "https://ntfy.sh/${ntfyTopic}" || true
+  '';
+in
+
 {
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
@@ -21,10 +39,10 @@
     monthly = 3;   # keep 3 monthly snapshots
   };
 
-  # ZFS Event Daemon — monitors pool health and logs warnings on drive errors,
-  # checksum failures, and pool state changes.
   services.zfs.zed.settings = {
     ZED_DEBUG_LOG = "/tmp/zed.log";
     ZED_NOTIFY_VERBOSE = true;
+    ZED_EMAIL_ADDR = "zfs@localhost";
+    ZED_EMAIL_PROG = toString zedNotify;
   };
 }

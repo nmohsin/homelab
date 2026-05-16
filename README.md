@@ -19,8 +19,12 @@ modules/
   ssh.nix                 # OpenSSH (key-only auth, no root login)
   packages.nix            # System packages, zsh + oh-my-zsh
   networking.nix          # Hostname, firewall
-  zfs.nix                 # ZFS support, auto-imports pool "tank"
+  zfs.nix                 # ZFS support, auto-imports pool "tank", ZED → ntfy.sh alerts
   tailscale.nix           # Tailscale VPN + Tailscale SSH
+  vpn.nix                 # Gluetun + qBittorrent (Docker, ProtonVPN WireGuard)
+  arr.nix                 # Sonarr, Radarr, Prowlarr, Jellyfin, FlareSolverr
+  homepage.nix            # Homepage dashboard (port 3000)
+  secrets.nix             # sops-nix: ProtonVPN config decrypted at boot
 ```
 
 ## Usage
@@ -78,6 +82,23 @@ Then on the homelab:
 git pull
 sudo nixos-rebuild switch --flake '.#homelab'
 ```
+
+### Monitoring (ZED → ntfy.sh)
+
+ZFS pool health events are sent to [ntfy.sh](https://ntfy.sh) topic `homelab-moyfii-zfs`. Subscribe from any device:
+
+```bash
+# Terminal
+curl -s https://ntfy.sh/homelab-moyfii-zfs/json
+
+# Phone: install ntfy app, subscribe to homelab-moyfii-zfs
+```
+
+To change the topic name (recommended — it's public), edit `ntfyTopic` in `modules/zfs.nix` and rebuild.
+
+### Homepage dashboard
+
+Available at `http://moyfii:3000` from any Tailnet device. Config is managed in `modules/homepage.nix` (read-only from the container). Edit that file to add/remove services, then rebuild.
 
 ### Secrets management
 

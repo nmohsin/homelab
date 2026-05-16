@@ -11,6 +11,7 @@
     ./modules/vpn.nix
     ./modules/arr.nix
     ./modules/secrets.nix
+    ./modules/homepage.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

@@ -11,7 +11,9 @@
 - Remote: git@github.com:nmohsin/homelab.git
 - Tailscale SSH enabled — accessible as `moyfii` from any Tailnet device
 - ArrStack: Sonarr, Radarr, Prowlarr, Jellyfin (native NixOS), qBittorrent + Gluetun (Docker)
-- ArrStack ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
+- Homepage dashboard on port 3000 — all service links use `http://moyfii:PORT` (Tailscale MagicDNS)
+- ZED pool health alerts → ntfy.sh topic `homelab-moyfii-zfs` (public topic — see gotcha below)
+- All service ports only open on `tailscale0` — unreachable from local network, only accessible via Tailnet
 - Secrets managed via sops-nix — ProtonVPN config is encrypted in `secrets/protonvpn.conf`, decrypted at boot using the homelab SSH host key. SOPS age key stored in Bitwarden and `~/.config/sops/age/keys.txt` on Mac.
 - Media group GID 994 — sonarr, radarr, jellyfin, and qBittorrent container all share it for directory access
 
@@ -41,3 +43,5 @@
 - Sonarr and Radarr both need a remote path mapping set in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
 - On a fresh setup, pull the qBittorrent image before starting Gluetun — otherwise the pull fails through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
 - Do not use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd already, and combining both causes a conflict that prevents containers from starting
+- ntfy.sh topic `homelab-moyfii-zfs` is public — anyone who knows the name can subscribe. If you want privacy, self-host ntfy or change the topic name to something unguessable in `modules/zfs.nix`
+- Homepage config in `/etc/homepage/` is managed by Nix (read-only) — edit `modules/homepage.nix` to change services, don't expect UI-driven config changes to persist
