@@ -19,12 +19,13 @@
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin — all in `arr.nix`
+- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin (all in `arr.nix`), Paperless-ngx (`paperless.nix`)
 - **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
 - All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
+- Paperless-ngx provides document management with OCR, full-text search, auto-classification — data at `/data/paperless` on ZFS, PostgreSQL backend
 - Daily auto-upgrade from GitHub flake (07:00 ± 1h, no auto-reboot) — see `auto-update.nix`
 
 ## Users and permissions

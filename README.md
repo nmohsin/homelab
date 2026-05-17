@@ -21,7 +21,8 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   ┌───────────────────────────┼───────────────────┐     │
 │   │  Jellyfin :8096    Sonarr :8989   Radarr :7878│     │
 │   │  Prowlarr :9696   Bazarr :6767  FlareSolverr  │     │
-│   │  Homepage :3000  Uptime Kuma :3001      :8191  │     │
+│   │  Homepage :3000  Uptime Kuma :3001      :8191 │     │
+│   │  Paperless :28981                              │     │
 │   └───────────────────────────────────────────────┘     │
 │                                                         │
 │   ┌─── Gluetun (ProtonVPN WireGuard tunnel) ──────┐     │
@@ -43,7 +44,7 @@ qBittorrent traffic exits through Gluetun's VPN tunnel.
 - **Media group (GID 994)** — Sonarr, Radarr, Bazarr, Jellyfin, and qBittorrent all share a `media` group for filesystem access to `/data`. This avoids running services as root while giving them shared read/write access to media directories.
 - **Docker via `virtualisation.oci-containers`** — containers are managed through NixOS's systemd integration, not `docker-compose`. NixOS creates a systemd service per container, handling restarts and dependencies. Do not use Docker's `--restart` flags (they conflict with systemd).
 - **Centralized port numbers** — all service ports are defined once in `flake.nix` as `specialArgs.ports` and passed to modules. This is the single source of truth for port assignments.
-- **Native vs Docker** — Jellyfin, Sonarr, Radarr, Prowlarr, and Bazarr use native NixOS services (they have first-class NixOS modules). qBittorrent, FlareSolverr, Recyclarr, Homepage, and Uptime Kuma run as Docker containers (no native modules, or the container approach is simpler).
+- **Native vs Docker** — Jellyfin, Sonarr, Radarr, Prowlarr, Bazarr, and Paperless-ngx use native NixOS services (they have first-class NixOS modules). qBittorrent, FlareSolverr, Recyclarr, Homepage, and Uptime Kuma run as Docker containers (no native modules, or the container approach is simpler).
 - **Recyclarr** — syncs TRaSH Guide quality profiles and custom formats into Sonarr/Radarr every 6 hours via built-in cron. Config is inline in `arr.nix`; API keys are in `secrets/arr-api-keys.yaml` (sops-encrypted). Uses `--network=host` to reach Sonarr/Radarr on localhost.
 - **qBittorrent through Gluetun** — qBittorrent uses `--network=container:gluetun`, meaning all its network traffic routes through Gluetun's ProtonVPN WireGuard tunnel. The qBittorrent WebUI port (8080) is exposed through Gluetun's port mappings.
 - **Secrets via sops-nix** — secrets are encrypted with age keys and stored in the repo. At boot, sops-nix decrypts them using the machine's SSH host key. No manual intervention needed on reboot.
@@ -62,6 +63,7 @@ qBittorrent traffic exits through Gluetun's VPN tunnel.
 | Prowlarr      | 9696 | Native NixOS   | `arr.nix`      |
 | Bazarr        | 6767 | Native NixOS   | `arr.nix`      |
 | FlareSolverr  | 8191 | Docker         | `arr.nix`      |
+| Paperless-ngx | 28981| Native NixOS   | `paperless.nix`  |
 | Uptime Kuma   | 3001 | Docker         | `monitoring.nix` |
 
 Port numbers are defined in `flake.nix` as `specialArgs.ports`.
@@ -94,6 +96,7 @@ modules/
   vpn.nix                   # Docker: Gluetun (ProtonVPN WireGuard) + qBittorrent (uses Gluetun network)
   arr.nix                   # Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin (native NixOS), FlareSolverr + Recyclarr (Docker)
   homepage.nix              # Homepage dashboard (Docker), config written by NixOS activation script
+  paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR
   monitoring.nix            # Uptime Kuma (Docker) — service uptime monitoring
   auto-update.nix           # Daily auto-upgrade from GitHub flake (no auto-reboot)
 ```
