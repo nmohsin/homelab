@@ -21,45 +21,10 @@
   };
 
   systemd.services = {
-    paperless-scheduler = {
-      after = [ "zfs-import-tank.service" ];
-      serviceConfig = {
-        NoNewPrivileges = true;
-        PrivateTmp = true;
-        ProtectHome = true;
-        ProtectSystem = "strict";
-        ReadWritePaths = [
-          "/data/paperless"
-          "/var/lib/paperless"
-        ];
-      };
-    };
-    paperless-consumer = {
-      after = [ "zfs-import-tank.service" ];
-      serviceConfig = {
-        NoNewPrivileges = true;
-        PrivateTmp = true;
-        ProtectHome = true;
-        ProtectSystem = "strict";
-        ReadWritePaths = [
-          "/data/paperless"
-          "/var/lib/paperless"
-        ];
-      };
-    };
-    paperless-web = {
-      after = [ "zfs-import-tank.service" ];
-      serviceConfig = {
-        NoNewPrivileges = true;
-        PrivateTmp = true;
-        ProtectHome = true;
-        ProtectSystem = "strict";
-        ReadWritePaths = [
-          "/data/paperless"
-          "/var/lib/paperless"
-        ];
-      };
-    };
+    paperless-scheduler.after = [ "zfs-import-tank.service" ];
+    paperless-consumer.after = [ "zfs-import-tank.service" ];
+    paperless-web.after = [ "zfs-import-tank.service" ];
+    paperless-task-queue.after = [ "zfs-import-tank.service" ];
   };
 
   system.activationScripts.paperless-dirs.text = ''

@@ -15,7 +15,7 @@
 - Docker managed via `virtualisation.oci-containers` (systemd lifecycle, not docker-compose)
 - Secrets via sops-nix — encrypted with age, decrypted at boot using SSH host key
 - Formatter: nixfmt-tree (defined in flake.nix). Linter: statix. Both run automatically via pre-commit hook — do not run manually
-- Native services have systemd hardening (ProtectSystem=strict, NoNewPrivileges, PrivateTmp, ProtectHome)
+- Native services have systemd hardening (ProtectSystem=strict, NoNewPrivileges, PrivateTmp, ProtectHome). Some NixOS modules (e.g. Paperless) ship their own hardening — don't duplicate it or overrides will conflict
 
 ## Services
 
