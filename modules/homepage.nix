@@ -29,6 +29,11 @@ let
             href: http://${host}:${toString ports.prowlarr}
             description: Indexers
             ping: http://${host}:${toString ports.prowlarr}
+        - Bazarr:
+            icon: bazarr.png
+            href: http://${host}:${toString ports.bazarr}
+            description: Subtitles
+            ping: http://${host}:${toString ports.bazarr}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png

@@ -5,6 +5,7 @@
     sonarr.enable = true;
     radarr.enable = true;
     jellyfin.enable = true;
+    bazarr.enable = true;
   };
 
   systemd.services = {
@@ -60,12 +61,27 @@
         ReadOnlyPaths = [ "/data/media" ];
       };
     };
+    bazarr = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ReadWritePaths = [
+          "/var/lib/bazarr"
+          "/data/media/tv"
+          "/data/media/movies"
+        ];
+      };
+    };
   };
 
   users.users = {
     sonarr.extraGroups = [ "media" ];
     radarr.extraGroups = [ "media" ];
     jellyfin.extraGroups = [ "media" ];
+    bazarr.extraGroups = [ "media" ];
   };
 
   virtualisation.oci-containers.containers.flaresolverr = {
@@ -85,6 +101,7 @@
     ports.radarr
     ports.prowlarr
     ports.qbittorrent
+    ports.bazarr
     ports.flaresolverr
   ];
 }

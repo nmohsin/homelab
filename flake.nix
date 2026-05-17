@@ -26,6 +26,7 @@
             sonarr = 8989;
             radarr = 7878;
             prowlarr = 9696;
+            bazarr = 6767;
             qbittorrent = 8080;
             flaresolverr = 8191;
             homepage = 3000;

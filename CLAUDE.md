@@ -14,12 +14,12 @@
 - Port numbers defined as `specialArgs.ports` in `flake.nix`, passed to modules
 - Docker managed via `virtualisation.oci-containers` (systemd lifecycle, not docker-compose)
 - Secrets via sops-nix — encrypted with age, decrypted at boot using SSH host key
-- Formatter: nixfmt-tree (defined in flake.nix). Linter: statix (run via `just lint`)
+- Formatter: nixfmt-tree (defined in flake.nix). Linter: statix. Both run automatically via pre-commit hook — do not run manually
 - Native services have systemd hardening (ProtectSystem=strict, NoNewPrivileges, PrivateTmp, ProtectHome)
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Prowlarr, Jellyfin — all in `arr.nix`
+- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin — all in `arr.nix`
 - **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
@@ -30,7 +30,7 @@
 
 - nadeem: wheel, docker, networkmanager, SSH key auth
 - fiifii: wheel, networkmanager, password auth
-- media group GID 994: sonarr, radarr, jellyfin users + qBittorrent container (PGID=994)
+- media group GID 994: sonarr, radarr, bazarr, jellyfin users + qBittorrent container (PGID=994)
 - `/data/downloads`, `/data/media/tv`, `/data/media/movies`: owned `root:media`, mode 775, setgid
 
 ## Conventions
