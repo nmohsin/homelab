@@ -1,4 +1,34 @@
-{ ports, ... }:
+{
+  config,
+  ports,
+  pkgs,
+  ...
+}:
+let
+  recyclarrConfig = pkgs.writeText "recyclarr.yml" ''
+    sonarr:
+      tv:
+        base_url: !secret sonarr_url
+        api_key: !secret sonarr_api_key
+        quality_definition:
+          type: series
+        quality_profiles:
+          - trash_id: 72dae194fc92bf828f32cde7744e51a1
+            reset_unmatched_scores:
+              enabled: true
+
+    radarr:
+      movies:
+        base_url: !secret radarr_url
+        api_key: !secret radarr_api_key
+        quality_definition:
+          type: movie
+        quality_profiles:
+          - trash_id: d1d67249d3890e49bc12e275d989a7e9
+            reset_unmatched_scores:
+              enabled: true
+  '';
+in
 {
   sops.secrets.sonarr_api_key = {
     sopsFile = ../secrets/arr-api-keys.yaml;
@@ -91,6 +121,30 @@
     radarr.extraGroups = [ "media" ];
     jellyfin.extraGroups = [ "media" ];
     bazarr.extraGroups = [ "media" ];
+  };
+
+  system.activationScripts.recyclarr-config = {
+    deps = [ "setupSecrets" ];
+    text = ''
+      mkdir -p /var/lib/recyclarr
+      cp ${recyclarrConfig} /var/lib/recyclarr/recyclarr.yml
+      cat > /var/lib/recyclarr/secrets.yml <<SECRETS
+      sonarr_url: http://localhost:${toString ports.sonarr}
+      sonarr_api_key: $(cat ${config.sops.secrets.sonarr_api_key.path})
+      radarr_url: http://localhost:${toString ports.radarr}
+      radarr_api_key: $(cat ${config.sops.secrets.radarr_api_key.path})
+      SECRETS
+    '';
+  };
+
+  virtualisation.oci-containers.containers.recyclarr = {
+    image = "ghcr.io/recyclarr/recyclarr:8";
+    volumes = [ "/var/lib/recyclarr:/config" ];
+    environment = {
+      CRON_SCHEDULE = "0 */6 * * *";
+      TZ = "America/Los_Angeles";
+    };
+    extraOptions = [ "--network=host" ];
   };
 
   virtualisation.oci-containers.containers.flaresolverr = {
