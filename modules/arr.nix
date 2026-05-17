@@ -1,5 +1,14 @@
 { ports, ... }:
 {
+  sops.secrets.sonarr_api_key = {
+    sopsFile = ../secrets/arr-api-keys.yaml;
+    owner = "root";
+  };
+  sops.secrets.radarr_api_key = {
+    sopsFile = ../secrets/arr-api-keys.yaml;
+    owner = "root";
+  };
+
   services = {
     prowlarr.enable = true;
     sonarr.enable = true;
