@@ -134,6 +134,7 @@ in
       radarr_url: http://localhost:${toString ports.radarr}
       radarr_api_key: $(cat ${config.sops.secrets.radarr_api_key.path})
       SECRETS
+      chown -R 1000:1000 /var/lib/recyclarr
     '';
   };
 
