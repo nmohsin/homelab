@@ -1,6 +1,7 @@
 ---
 name: nix-debug
 description: Debug the homelab server (moyfii) via SSH. Runs diagnostic commands remotely to investigate service issues, check logs, inspect containers, and verify system state. Use when troubleshooting any homelab problem.
+when_to_use: Use proactively when the user mentions something is broken, not working, erroring, down, unreachable, or asks to check logs, status, or health of any homelab service. Also use when the user says things like "what's wrong with", "why is X not working", "check if X is running", or "look at the logs for X".
 allowed-tools: Bash(ssh moyfii *)
 ---
 

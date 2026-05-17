@@ -96,6 +96,10 @@ Add an entry to the appropriate category in `servicesYaml`. Follow the existing 
 
 Tell the user: "Add a monitor in Uptime Kuma (`http://moyfii.tail083295.ts.net:3001`) for the new service. Use the Tailscale FQDN as the URL. If the service returns non-200 at root, use a `/ping` or `/health` endpoint."
 
-### 8. Format
+### 8. Harden (native services only)
+
+If the new service is a native NixOS service (not Docker), invoke `/nix-harden` on the module to review and apply systemd hardening.
+
+### 9. Format
 
 Run `nixfmt` on all changed `.nix` files.

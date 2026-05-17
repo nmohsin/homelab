@@ -1,6 +1,6 @@
 ---
 name: nix-reviewer
-description: Reviews NixOS module changes for correctness and convention adherence. Use when modules are added or modified, or when the user asks to review changes.
+description: Reviews NixOS module changes for correctness and convention adherence. Use proactively after any module in modules/ is added or modified, or when the user asks to review changes.
 tools:
   - Read
   - Grep
