@@ -31,6 +31,7 @@
             flaresolverr = 8191;
             homepage = 3000;
             uptimekuma = 3001;
+            paperless = 28981;
           };
         };
         modules = [

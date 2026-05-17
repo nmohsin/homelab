@@ -12,6 +12,7 @@
     ./modules/secrets.nix
     ./modules/homepage.nix
     ./modules/monitoring.nix
+    ./modules/paperless.nix
     ./modules/auto-update.nix
   ];
 

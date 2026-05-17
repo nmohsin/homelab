@@ -45,6 +45,12 @@ let
             href: http://${host}:${toString ports.flaresolverr}
             description: Cloudflare bypass
             ping: http://${host}:${toString ports.flaresolverr}
+    - Documents:
+        - Paperless-ngx:
+            icon: paperless-ngx.png
+            href: http://${host}:${toString ports.paperless}
+            description: Document management
+            ping: http://${host}:${toString ports.paperless}
     - Monitoring:
         - Uptime Kuma:
             icon: uptime-kuma.png
