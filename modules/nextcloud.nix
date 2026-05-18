@@ -6,7 +6,7 @@
 {
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud31;
+    package = pkgs.nextcloud32;
     hostName = "moyfii.tail083295.ts.net";
     home = "/data/nextcloud";
     maxUploadSize = "10G";
