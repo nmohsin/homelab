@@ -27,7 +27,11 @@
         "moyfii"
       ];
       default_phone_region = "US";
+      maintenance_window_start = 4;
+      log_type = "file";
     };
+
+    phpOptions."opcache.interned_strings_buffer" = "16";
   };
 
   services.nginx.virtualHosts."moyfii.tail083295.ts.net" = {
