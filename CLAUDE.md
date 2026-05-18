@@ -72,7 +72,7 @@
 - Homepage config at `/var/lib/homepage/` is overwritten on every rebuild — edit `modules/homepage.nix`, not the container filesystem
 - Nextcloud's NixOS module owns the nginx config — adding another nginx-backed service requires coordinating virtual hosts
 - Nextcloud `adminpassFile` is only read on first install; change password via web UI or `nextcloud-occ user:resetpassword admin`
-- Nextcloud upgrades are version-locked (`pkgs.nextcloud32`) — can't skip major versions, bump explicitly
+- Nextcloud upgrades are version-locked (`pkgs.nextcloud33`) — can't skip major versions, bump explicitly
 
 ## Gotchas: Users / Auth
 
