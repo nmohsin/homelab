@@ -32,6 +32,7 @@
             homepage = 3000;
             uptimekuma = 3001;
             paperless = 28981;
+            nextcloud = 8085;
           };
         };
         modules = [

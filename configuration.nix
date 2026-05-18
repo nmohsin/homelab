@@ -13,6 +13,7 @@
     ./modules/homepage.nix
     ./modules/monitoring.nix
     ./modules/paperless.nix
+    ./modules/nextcloud.nix
     ./modules/auto-update.nix
   ];
 

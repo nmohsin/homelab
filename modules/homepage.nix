@@ -51,6 +51,11 @@ let
             href: http://${host}:${toString ports.paperless}
             description: Document management
             ping: http://${host}:${toString ports.paperless}
+        - Nextcloud:
+            icon: nextcloud.png
+            href: http://${host}:${toString ports.nextcloud}
+            description: File sync and sharing
+            ping: http://${host}:${toString ports.nextcloud}
     - Monitoring:
         - Uptime Kuma:
             icon: uptime-kuma.png
