@@ -13,29 +13,32 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 ### Network topology
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Tailscale Network (tailscale0)                         │
-│                                                         │
-│   Mac / Phone ──────────► moyfii.tail083295.ts.net      │
-│                               │                         │
-│   ┌───────────────────────────┼───────────────────┐     │
-│   │  Jellyfin :8096    Sonarr :8989   Radarr :7878│     │
-│   │  Prowlarr :9696   Bazarr :6767  FlareSolverr  │     │
-│   │  Homepage :3000  Uptime Kuma :3001      :8191 │     │
-│   │  Paperless :28981  Nextcloud :8085              │     │
-│   └───────────────────────────────────────────────┘     │
-│                                                         │
-│   ┌─── Gluetun (ProtonVPN WireGuard tunnel) ──────┐     │
-│   │                                               │     │
-│   │   qBittorrent :8080                           │     │
-│   │   (network = container:gluetun)               │     │
-│   │                                               │     │
-│   └───────────────────────────────────────────────┘     │
-└─────────────────────────────────────────────────────────┘
-
-Local network can only reach SSH (port 22).
-All service ports are bound to tailscale0 only.
-qBittorrent traffic exits through Gluetun's VPN tunnel.
+┌─────────────────────────────────────────────────────────────┐
+│  Tailscale Network (tailscale0)                             │
+│                                                             │
+│   Mac / Phone ──────────► moyfii.tail083295.ts.net          │
+│                               │                             │
+│   ┌─ Media ─────────────────────────────────────────────┐   │
+│   │  Jellyfin :8096  Sonarr :8989  Radarr :7878         │   │
+│   │  Prowlarr :9696  Bazarr :6767                       │   │
+│   └─────────────────────────────────────────────────────┘   │
+│   ┌─ Downloads ─────────────────────────────────────────┐   │
+│   │  FlareSolverr :8191                                 │   │
+│   │  ┌─ Gluetun (ProtonVPN WireGuard) ──────────────┐   │   │
+│   │  │  qBittorrent :8080                           │   │   │
+│   │  └──────────────────────────────────────────────┘   │   │
+│   └─────────────────────────────────────────────────────┘   │
+│   ┌─ Documents ─────────────────────────────────────────┐   │
+│   │  Paperless-ngx :28981    Nextcloud :8085            │   │
+│   └─────────────────────────────────────────────────────┘   │
+│   ┌─ Monitoring ────────────────────────────────────────┐   │
+│   │  Homepage :3000    Uptime Kuma :3001                │   │
+│   └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│   Local network can only reach SSH (port 22).               │
+│   All service ports are bound to tailscale0 only.           │
+│   qBittorrent traffic exits through Gluetun's VPN tunnel.   │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ### Design decisions
