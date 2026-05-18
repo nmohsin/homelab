@@ -208,6 +208,7 @@ No manual steps are needed on the server after a rebuild — sops-nix handles de
 
 Step-by-step guides for common tasks live in `docs/`:
 
+- [Terminology](docs/terminology.md)
 - [Updating the ProtonVPN config](docs/protonvpn.md)
 - [Adding a new service](docs/adding-a-service.md)
 - [Adding a new encrypted secret](docs/adding-a-secret.md)
