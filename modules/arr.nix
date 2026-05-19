@@ -80,6 +80,7 @@ in
         PrivateTmp = true;
         ProtectHome = true;
         ProtectSystem = "strict";
+        UMask = "0002";
         ReadWritePaths = [
           "/var/lib/radarr"
           "/data/downloads"
