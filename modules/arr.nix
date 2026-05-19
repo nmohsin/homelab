@@ -65,6 +65,7 @@ in
         PrivateTmp = true;
         ProtectHome = true;
         ProtectSystem = "strict";
+        UMask = "0002";
         ReadWritePaths = [
           "/var/lib/sonarr"
           "/data/downloads"
@@ -107,6 +108,7 @@ in
         PrivateTmp = true;
         ProtectHome = true;
         ProtectSystem = "strict";
+        UMask = "0002";
         ReadWritePaths = [
           "/var/lib/bazarr"
           "/data/media/tv"
