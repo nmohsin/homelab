@@ -33,19 +33,19 @@ in
   sops.secrets = {
     sonarr_api_key = {
       sopsFile = ../secrets/arr-api-keys.yaml;
-      owner = "root";
+      mode = "0444";
     };
     radarr_api_key = {
       sopsFile = ../secrets/arr-api-keys.yaml;
-      owner = "root";
+      mode = "0444";
     };
     prowlarr_api_key = {
       sopsFile = ../secrets/arr-api-keys.yaml;
-      owner = "root";
+      mode = "0444";
     };
     bazarr_api_key = {
       sopsFile = ../secrets/arr-api-keys.yaml;
-      owner = "root";
+      mode = "0444";
     };
   };
 

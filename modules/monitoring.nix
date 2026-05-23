@@ -4,29 +4,6 @@
   ...
 }:
 {
-  sops.secrets = {
-    exportarr_sonarr_api_key = {
-      sopsFile = ../secrets/arr-api-keys.yaml;
-      key = "sonarr_api_key";
-      owner = "exportarr-sonarr";
-    };
-    exportarr_radarr_api_key = {
-      sopsFile = ../secrets/arr-api-keys.yaml;
-      key = "radarr_api_key";
-      owner = "exportarr-radarr";
-    };
-    exportarr_prowlarr_api_key = {
-      sopsFile = ../secrets/arr-api-keys.yaml;
-      key = "prowlarr_api_key";
-      owner = "exportarr-prowlarr";
-    };
-    exportarr_bazarr_api_key = {
-      sopsFile = ../secrets/arr-api-keys.yaml;
-      key = "bazarr_api_key";
-      owner = "exportarr-bazarr";
-    };
-  };
-
   services.prometheus = {
     enable = true;
     port = ports.prometheus;
@@ -44,25 +21,25 @@
         enable = true;
         port = ports.exportarrSonarr;
         url = "http://localhost:${toString ports.sonarr}";
-        apiKeyFile = config.sops.secrets.exportarr_sonarr_api_key.path;
+        apiKeyFile = config.sops.secrets.sonarr_api_key.path;
       };
       exportarr-radarr = {
         enable = true;
         port = ports.exportarrRadarr;
         url = "http://localhost:${toString ports.radarr}";
-        apiKeyFile = config.sops.secrets.exportarr_radarr_api_key.path;
+        apiKeyFile = config.sops.secrets.radarr_api_key.path;
       };
       exportarr-prowlarr = {
         enable = true;
         port = ports.exportarrProwlarr;
         url = "http://localhost:${toString ports.prowlarr}";
-        apiKeyFile = config.sops.secrets.exportarr_prowlarr_api_key.path;
+        apiKeyFile = config.sops.secrets.prowlarr_api_key.path;
       };
       exportarr-bazarr = {
         enable = true;
         port = ports.exportarrBazarr;
         url = "http://localhost:${toString ports.bazarr}";
-        apiKeyFile = config.sops.secrets.exportarr_bazarr_api_key.path;
+        apiKeyFile = config.sops.secrets.bazarr_api_key.path;
       };
     };
 
