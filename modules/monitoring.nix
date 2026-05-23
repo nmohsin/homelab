@@ -86,6 +86,7 @@
           type = "prometheus";
           url = "http://localhost:${toString ports.prometheus}";
           isDefault = true;
+          jsonData.timeInterval = "60s";
         }
       ];
     };
