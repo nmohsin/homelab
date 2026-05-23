@@ -30,13 +30,23 @@ let
   '';
 in
 {
-  sops.secrets.sonarr_api_key = {
-    sopsFile = ../secrets/arr-api-keys.yaml;
-    owner = "root";
-  };
-  sops.secrets.radarr_api_key = {
-    sopsFile = ../secrets/arr-api-keys.yaml;
-    owner = "root";
+  sops.secrets = {
+    sonarr_api_key = {
+      sopsFile = ../secrets/arr-api-keys.yaml;
+      owner = "root";
+    };
+    radarr_api_key = {
+      sopsFile = ../secrets/arr-api-keys.yaml;
+      owner = "root";
+    };
+    prowlarr_api_key = {
+      sopsFile = ../secrets/arr-api-keys.yaml;
+      owner = "root";
+    };
+    bazarr_api_key = {
+      sopsFile = ../secrets/arr-api-keys.yaml;
+      owner = "root";
+    };
   };
 
   services = {

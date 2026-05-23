@@ -34,6 +34,14 @@
             paperless = 28981;
             nextcloud = 8085;
             jellyseerr = 5055;
+            prometheus = 9090;
+            grafana = 3030;
+            nodeExporter = 9100;
+            cadvisor = 9800;
+            exportarrSonarr = 9707;
+            exportarrRadarr = 9708;
+            exportarrProwlarr = 9709;
+            exportarrBazarr = 9710;
           };
         };
         modules = [
