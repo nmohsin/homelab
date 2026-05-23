@@ -33,6 +33,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Monitoring ────────────────────────────────────────┐   │
 │   │  Homepage :3000    Uptime Kuma :3001                │   │
+│   │  Grafana :3030     Prometheus :9090                 │   │
 │   └─────────────────────────────────────────────────────┘   │
 │                                                             │
 │   Local network can only reach SSH (port 22).               │
@@ -53,6 +54,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 - **Secrets via sops-nix** — secrets need to live somewhere, and keeping them outside the repo means manual copying to the server on every change. sops-nix allows secrets to be encrypted with age keys and committed to the repo safely. At boot, sops-nix decrypts them using the machine's SSH host key — no manual steps needed after a rebuild.
 - **ZFS snapshot policy** — daily (7), weekly (4), monthly (3). Frequent (15-min) and hourly snapshots are disabled because the media workload is write-once: files are large, rarely modified after import, and not worth the storage cost of high-frequency snapshots.
 - **Gluetun starts after Tailscale** — if the WireGuard tunnel comes up first, it can claim routes that Tailscale needs, preventing Tailscale from connecting at boot. Ordering Gluetun after `tailscaled` avoids this conflict.
+- **Prometheus + Grafana over Uptime Kuma alone** — Uptime Kuma only gives binary up/down status. Prometheus adds time-series metrics (CPU, RAM, disk fill rate, arr queue depths, container resource usage) that let you spot trends before they become outages. Both run as native NixOS services. Exportarr provides per-service arr metrics without modifying the arr services themselves; cAdvisor covers Docker containers.
 
 ### Port reference
 
@@ -70,8 +72,10 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 | Nextcloud     | 8085 | Native NixOS   | `nextcloud.nix`  |
 | Paperless-ngx | 28981| Native NixOS   | `paperless.nix`  |
 | Uptime Kuma   | 3001 | Docker         | `monitoring.nix` |
+| Grafana       | 3030 | Native NixOS   | `monitoring.nix` |
+| Prometheus    | 9090 | Native NixOS   | `monitoring.nix` |
 
-Port numbers are defined in `flake.nix` as `specialArgs.ports`.
+Port numbers are defined in `flake.nix` as `specialArgs.ports`. Internal-only scrape targets (node_exporter :9100, exportarr :9707-9710, cAdvisor :9800) are not listed — they are localhost-only and have no firewall rules.
 
 ## File structure
 
@@ -103,7 +107,7 @@ modules/
   homepage.nix              # Homepage dashboard (Docker), config written by NixOS activation script
   paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR
   nextcloud.nix             # Nextcloud (native NixOS) — file sync with PostgreSQL + Redis
-  monitoring.nix            # Uptime Kuma (Docker) — service uptime monitoring
+  monitoring.nix            # Prometheus + Grafana (native NixOS), node_exporter, exportarr x4, cAdvisor (Docker), Uptime Kuma (Docker)
   auto-update.nix           # Daily auto-upgrade from GitHub flake (no auto-reboot)
 ```
 
@@ -175,9 +179,11 @@ rebuild
 
 ### Monitoring
 
-**Uptime Kuma** — available at `http://moyfii.tail083295.ts.net:3001`. Monitors are configured in the web UI (not Nix). Data persists in `/var/lib/uptime-kuma`.
+**Uptime Kuma** — `http://moyfii.tail083295.ts.net:3001`. Monitors configured in the web UI (not Nix). Data persists in `/var/lib/uptime-kuma`. Monitor URLs use the Tailscale FQDN; Sonarr, Radarr, and Prowlarr should use the `/ping` endpoint (root URL returns non-200).
 
-Monitor URLs use the Tailscale FQDN (`http://moyfii.tail083295.ts.net:<port>`). Sonarr, Radarr, and Prowlarr should use the `/ping` endpoint — their root URL returns non-200.
+**Prometheus** — `http://moyfii.tail083295.ts.net:9090`. Scrapes node_exporter (system metrics + ZFS), exportarr instances (Sonarr/Radarr/Prowlarr/Bazarr queue metrics), and cAdvisor (Docker container metrics) every 1 minute.
+
+**Grafana** — `http://moyfii.tail083295.ts.net:3030`. Prometheus datasource is provisioned automatically from Nix config. Dashboards are imported manually via the UI. Recommended community dashboard IDs: Node Exporter Full (1860), cAdvisor (14282), exportarr-Sonarr (12530). Admin password is set on first login.
 
 **ZFS health (ZED)** — pool events are sent to [ntfy.sh](https://ntfy.sh) topic `homelab-moyfii-zfs`. Subscribe from any device:
 

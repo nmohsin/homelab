@@ -19,14 +19,17 @@
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`)
-- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`)
+- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Prometheus + Grafana (`monitoring.nix`)
+- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
 - All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
 - Paperless-ngx provides document management with OCR, full-text search, auto-classification — data at `/data/paperless` on ZFS, PostgreSQL backend
 - Nextcloud provides file sync, sharing, and collaboration — data at `/data/nextcloud` on ZFS, PostgreSQL + Redis backend, nginx on port 8085
+- Prometheus scrapes node_exporter (system + ZFS), exportarr instances (arr queue metrics for Sonarr/Radarr/Prowlarr/Bazarr), and cAdvisor (Docker) — all exporter ports are localhost-only, no firewall rules needed
+- Grafana datasource is provisioned from Nix; dashboards are imported manually via the UI
+- arr API keys in `secrets/arr-api-keys.yaml` are shared between Recyclarr and exportarr — secrets use `mode = "0444"` so exportarr's DynamicUser services can read them
 - Daily auto-upgrade from GitHub flake (07:00 ± 1h, no auto-reboot) — see `auto-update.nix`
 
 ## Users and permissions
@@ -88,3 +91,6 @@
 - Uptime Kuma monitors are configured in its web UI, not in Nix — data persists in `/var/lib/uptime-kuma`
 - Sonarr/Radarr/Prowlarr monitors should use the `/ping` endpoint (root URL returns non-200)
 - ZED alerts go to ntfy.sh topic `homelab-moyfii-zfs` — this topic is public; change in `modules/zfs.nix` or self-host ntfy for privacy
+- exportarr exporters use `DynamicUser = true` — no static NixOS user is created, so sops secrets cannot use `owner = "exportarr-*"` (that key won't exist in `config.users.users`); use `mode = "0444"` instead
+- Grafana datasource must have `jsonData.timeInterval = "60s"` — without it, `$__rate_interval` is underestimated for short time ranges (<1h) and panels show "No data"
+- Prometheus and Grafana (ports 9090, 3030) are open on `tailscale0`; exporter ports (9100, 9707-9710, 9800) are localhost-only and need no firewall rules
