@@ -67,6 +67,16 @@ let
             href: http://${host}:${toString ports.uptimekuma}
             description: Service uptime monitoring
             ping: http://${host}:${toString ports.uptimekuma}
+        - Grafana:
+            icon: grafana.png
+            href: http://${host}:${toString ports.grafana}
+            description: Metrics dashboards
+            ping: http://${host}:${toString ports.grafana}
+        - Prometheus:
+            icon: prometheus.png
+            href: http://${host}:${toString ports.prometheus}
+            description: Metrics collection
+            ping: http://${host}:${toString ports.prometheus}
   '';
 
   settingsYaml = pkgs.writeText "homepage-settings.yaml" ''
@@ -84,6 +94,30 @@ let
         format:
           timeStyle: short
           dateStyle: short
+    - customapi:
+        url: http://${host}:${toString ports.prometheus}/api/v1/query?query=round(100+-+avg(rate(node_cpu_seconds_total%7Bmode%3D%22idle%22%7D%5B5m%5D))+*+100%2C+0.1)
+        refreshInterval: 30000
+        mappings:
+          - field: data.result.0.value.1
+            label: CPU
+            format: float
+            suffix: "%"
+    - customapi:
+        url: http://${host}:${toString ports.prometheus}/api/v1/query?query=round((1+-+node_memory_MemAvailable_bytes+%2F+node_memory_MemTotal_bytes)+*+100%2C+0.1)
+        refreshInterval: 30000
+        mappings:
+          - field: data.result.0.value.1
+            label: RAM
+            format: float
+            suffix: "%"
+    - customapi:
+        url: http://${host}:${toString ports.prometheus}/api/v1/query?query=round((1+-+node_filesystem_avail_bytes%7Bmountpoint%3D%22%2Fdata%22%7D+%2F+node_filesystem_size_bytes%7Bmountpoint%3D%22%2Fdata%22%7D)+*+100%2C+0.1)
+        refreshInterval: 30000
+        mappings:
+          - field: data.result.0.value.1
+            label: /data
+            format: float
+            suffix: "%"
   '';
 in
 {
