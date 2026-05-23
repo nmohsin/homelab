@@ -20,7 +20,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │                               │                             │
 │   ┌─ Media ─────────────────────────────────────────────┐   │
 │   │  Jellyfin :8096  Sonarr :8989  Radarr :7878         │   │
-│   │  Prowlarr :9696  Bazarr :6767                       │   │
+│   │  Prowlarr :9696  Bazarr :6767  Jellyseerr :5055     │   │
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Downloads ─────────────────────────────────────────┐   │
 │   │  FlareSolverr :8191                                 │   │
@@ -60,6 +60,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 |---------------|------|----------------|----------------|
 | Homepage      | 3000 | Docker         | `homepage.nix` |
 | Jellyfin      | 8096 | Native NixOS   | `arr.nix`      |
+| Jellyseerr    | 5055 | Native NixOS   | `arr.nix`      |
 | qBittorrent   | 8080 | Docker/Gluetun | `vpn.nix`      |
 | Radarr        | 7878 | Native NixOS   | `arr.nix`      |
 | Sonarr        | 8989 | Native NixOS   | `arr.nix`      |

@@ -33,6 +33,7 @@
             uptimekuma = 3001;
             paperless = 28981;
             nextcloud = 8085;
+            jellyseerr = 5055;
           };
         };
         modules = [

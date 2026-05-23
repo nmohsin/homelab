@@ -45,6 +45,7 @@ in
     radarr.enable = true;
     jellyfin.enable = true;
     bazarr.enable = true;
+    jellyseerr.enable = true;
   };
 
   systemd.services = {
@@ -117,6 +118,15 @@ in
         ];
       };
     };
+    jellyseerr = {
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        ReadWritePaths = [ "/var/lib/jellyseerr" ];
+      };
+    };
   };
 
   users.users = {
@@ -170,5 +180,6 @@ in
     ports.qbittorrent
     ports.bazarr
     ports.flaresolverr
+    ports.jellyseerr
   ];
 }

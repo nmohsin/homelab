@@ -19,7 +19,7 @@
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`)
+- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`)
 - **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
@@ -69,6 +69,9 @@
 ## Gotchas: Services
 
 - Sonarr and Radarr need remote path mappings in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
+- Jellyseerr integrations (Sonarr, Radarr, Jellyfin) are configured in its web UI after first deploy — no Nix config for API keys
+- Don't set `services.jellyseerr.configDir` — NixOS bug #457739 breaks startup if changed from default
+- Expect `services.jellyseerr` → `services.seerr` module rename in a future nixpkgs update (PR #500782)
 - Homepage config at `/var/lib/homepage/` is overwritten on every rebuild — edit `modules/homepage.nix`, not the container filesystem
 - Nextcloud's NixOS module owns the nginx config — adding another nginx-backed service requires coordinating virtual hosts
 - Nextcloud `adminpassFile` is only read on first install; change password via web UI or `nextcloud-occ user:resetpassword admin`
