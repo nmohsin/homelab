@@ -1,7 +1,10 @@
-{ ports, ... }:
+{ pkgs, ports, ... }:
 {
   virtualisation = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+      package = pkgs.docker_29;
+    };
 
     oci-containers = {
       backend = "docker";
