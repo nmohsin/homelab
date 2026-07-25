@@ -14,6 +14,7 @@
     ./modules/monitoring.nix
     ./modules/paperless.nix
     ./modules/nextcloud.nix
+    ./modules/stirling-pdf.nix
     ./modules/auto-update.nix
   ];
 

@@ -61,6 +61,11 @@ let
             href: http://${host}:${toString ports.nextcloud}
             description: File sync and sharing
             ping: http://${host}:${toString ports.nextcloud}
+        - Stirling PDF:
+            icon: stirling-pdf.png
+            href: http://${host}:${toString ports.stirlingPdf}
+            description: PDF tools
+            ping: http://${host}:${toString ports.stirlingPdf}
     - Monitoring:
         - Uptime Kuma:
             icon: uptime-kuma.png

@@ -42,6 +42,7 @@
             exportarrRadarr = 9708;
             exportarrProwlarr = 9709;
             exportarrBazarr = 9710;
+            stirlingPdf = 8490;
           };
         };
         modules = [
