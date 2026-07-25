@@ -30,6 +30,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Documents ─────────────────────────────────────────┐   │
 │   │  Paperless-ngx :28981    Nextcloud :8085            │   │
+│   │  Stirling PDF  :8490                                │   │
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Monitoring ────────────────────────────────────────┐   │
 │   │  Homepage :3000    Uptime Kuma :3001                │   │
@@ -71,6 +72,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 | FlareSolverr  | 8191 | Docker         | `arr.nix`      |
 | Nextcloud     | 8085 | Native NixOS   | `nextcloud.nix`  |
 | Paperless-ngx | 28981| Native NixOS   | `paperless.nix`  |
+| Stirling PDF  | 8490 | Native NixOS   | `stirling-pdf.nix` |
 | Uptime Kuma   | 3001 | Docker         | `monitoring.nix` |
 | Grafana       | 3030 | Native NixOS   | `monitoring.nix` |
 | Prometheus    | 9090 | Native NixOS   | `monitoring.nix` |
@@ -107,6 +109,7 @@ modules/
   homepage.nix              # Homepage dashboard (Docker), config written by NixOS activation script
   paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR
   nextcloud.nix             # Nextcloud (native NixOS) — file sync with PostgreSQL + Redis
+  stirling-pdf.nix          # Stirling PDF (native NixOS) — local PDF tools (merge, split, convert, OCR)
   monitoring.nix            # Prometheus + Grafana (native NixOS), node_exporter, exportarr x4, cAdvisor (Docker), Uptime Kuma (Docker)
   auto-update.nix           # Daily auto-upgrade from GitHub flake (no auto-reboot)
 ```
