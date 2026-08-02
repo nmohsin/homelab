@@ -41,6 +41,12 @@
         url = "http://localhost:${toString ports.bazarr}";
         apiKeyFile = config.sops.secrets.bazarr_api_key.path;
       };
+      exportarr-readarr = {
+        enable = true;
+        port = ports.exportarrReadarr;
+        url = "http://localhost:${toString ports.readarr}";
+        apiKeyFile = config.sops.secrets.readarr_api_key.path;
+      };
     };
 
     scrapeConfigs = [
@@ -63,6 +69,10 @@
       {
         job_name = "bazarr";
         static_configs = [ { targets = [ "localhost:${toString ports.exportarrBazarr}" ]; } ];
+      }
+      {
+        job_name = "readarr";
+        static_configs = [ { targets = [ "localhost:${toString ports.exportarrReadarr}" ]; } ];
       }
       {
         job_name = "cadvisor";

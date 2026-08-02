@@ -39,6 +39,10 @@ in
       sopsFile = ../secrets/arr-api-keys.yaml;
       mode = "0444";
     };
+    readarr_api_key = {
+      sopsFile = ../secrets/arr-api-keys.yaml;
+      mode = "0444";
+    };
     prowlarr_api_key = {
       sopsFile = ../secrets/arr-api-keys.yaml;
       mode = "0444";
