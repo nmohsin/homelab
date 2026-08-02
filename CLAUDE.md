@@ -19,7 +19,7 @@
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), Prometheus + Grafana (`monitoring.nix`)
+- **Native NixOS**: Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), AudioBookshelf (`audiobookshelf.nix`), Prometheus + Grafana (`monitoring.nix`)
 - **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
@@ -80,6 +80,8 @@
 - Nextcloud's NixOS module owns the nginx config — adding another nginx-backed service requires coordinating virtual hosts
 - Nextcloud `adminpassFile` is only read on first install; change password via web UI or `nextcloud-occ user:resetpassword admin`
 - Nextcloud upgrades are version-locked (`pkgs.nextcloud33`) — can't skip major versions, bump explicitly
+- AudioBookshelf reads from `/data/media/audiobooks` and `/data/media/books` (ReadOnlyPaths); libraries are configured in the AB web UI, not Nix — state persists in `/var/lib/audiobookshelf`
+- AudioBookshelf has no `/metrics` endpoint (upstream issue advplyr/audiobookshelf#3831) — monitor via Uptime Kuma only, not Prometheus
 
 ## Gotchas: Users / Auth
 

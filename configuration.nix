@@ -15,6 +15,7 @@
     ./modules/paperless.nix
     ./modules/nextcloud.nix
     ./modules/stirling-pdf.nix
+    ./modules/audiobookshelf.nix
     ./modules/auto-update.nix
   ];
 

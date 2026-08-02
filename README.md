@@ -21,7 +21,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   ┌─ Media ─────────────────────────────────────────────┐   │
 │   │  Jellyfin :8096  Sonarr :8989  Radarr :7878         │   │
 │   │  Readarr :8787   Prowlarr :9696  Bazarr :6767       │   │
-│   │  Jellyseerr :5055                                   │   │
+│   │  Jellyseerr :5055  AudioBookshelf :13378            │   │
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Downloads ─────────────────────────────────────────┐   │
 │   │  FlareSolverr :8191                                 │   │
@@ -75,6 +75,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 | Nextcloud     | 8085 | Native NixOS   | `nextcloud.nix`  |
 | Paperless-ngx | 28981| Native NixOS   | `paperless.nix`  |
 | Stirling PDF  | 8490 | Native NixOS   | `stirling-pdf.nix` |
+| AudioBookshelf | 13378 | Native NixOS  | `audiobookshelf.nix` |
 | Uptime Kuma   | 3001 | Docker         | `monitoring.nix` |
 | Grafana       | 3030 | Native NixOS   | `monitoring.nix` |
 | Prometheus    | 9090 | Native NixOS   | `monitoring.nix` |
@@ -112,6 +113,7 @@ modules/
   paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR
   nextcloud.nix             # Nextcloud (native NixOS) — file sync with PostgreSQL + Redis
   stirling-pdf.nix          # Stirling PDF (native NixOS) — local PDF tools (merge, split, convert, OCR)
+  audiobookshelf.nix        # AudioBookshelf (native NixOS) — audiobook and podcast server, reads /data/media
   monitoring.nix            # Prometheus + Grafana (native NixOS), node_exporter, exportarr x5, cAdvisor (Docker), Uptime Kuma (Docker)
   auto-update.nix           # Daily auto-upgrade from GitHub flake (no auto-reboot)
 ```

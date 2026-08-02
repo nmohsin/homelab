@@ -42,8 +42,13 @@ let
         - Readarr:
             icon: readarr.png
             href: http://${host}:${toString ports.readarr}
-            description: Ebooks and audiobooks
+            description: Ebook and audiobook downloader
             ping: http://${host}:${toString ports.readarr}
+        - AudioBookshelf:
+            icon: audiobookshelf.png
+            href: http://${host}:${toString ports.audiobookshelf}
+            description: Audiobook and podcast server
+            ping: http://${host}:${toString ports.audiobookshelf}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png
