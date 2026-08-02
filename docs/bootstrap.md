@@ -17,10 +17,10 @@
    ```
 9. Create media directories with correct permissions:
    ```bash
-   sudo mkdir -p /data/downloads /data/media/tv /data/media/movies /data/qbittorrent/config
-   sudo chown -R root:media /data/downloads /data/media/tv /data/media/movies
-   sudo chmod -R 775 /data/downloads /data/media/tv /data/media/movies
-   sudo chmod g+s /data/downloads /data/media/tv /data/media/movies
+   sudo mkdir -p /data/downloads /data/media/tv /data/media/movies /data/media/books /data/media/audiobooks /data/qbittorrent/config
+   sudo chown -R root:media /data/downloads /data/media/tv /data/media/movies /data/media/books /data/media/audiobooks
+   sudo chmod -R 775 /data/downloads /data/media/tv /data/media/movies /data/media/books /data/media/audiobooks
+   sudo chmod g+s /data/downloads /data/media/tv /data/media/movies /data/media/books /data/media/audiobooks
    ```
 10. Authenticate Tailscale:
     ```bash
@@ -37,7 +37,7 @@
     sudo passwd nadeem
     sudo passwd fiifii
     ```
-13. Configure Sonarr and Radarr remote path mappings in their web UIs:
+13. Configure Sonarr, Radarr, and Readarr remote path mappings in their web UIs:
     - Settings > Download Clients > Remote Path Mappings
     - Host: `localhost`, Remote: `/downloads`, Local: `/data/downloads`
 14. Add indexers in Prowlarr and sync to Sonarr/Radarr

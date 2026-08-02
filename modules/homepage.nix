@@ -39,6 +39,11 @@ let
             href: http://${host}:${toString ports.bazarr}
             description: Subtitles
             ping: http://${host}:${toString ports.bazarr}
+        - Readarr:
+            icon: readarr.png
+            href: http://${host}:${toString ports.readarr}
+            description: Ebooks and audiobooks
+            ping: http://${host}:${toString ports.readarr}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png

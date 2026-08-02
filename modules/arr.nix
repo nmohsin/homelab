@@ -53,6 +53,7 @@ in
     prowlarr.enable = true;
     sonarr.enable = true;
     radarr.enable = true;
+    readarr.enable = true;
     jellyfin.enable = true;
     bazarr.enable = true;
     jellyseerr.enable = true;
@@ -99,6 +100,22 @@ in
         ];
       };
     };
+    readarr = {
+      after = [ "zfs-import-tank.service" ];
+      serviceConfig = {
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        UMask = "0002";
+        ReadWritePaths = [
+          "/var/lib/readarr"
+          "/data/downloads"
+          "/data/media/books"
+          "/data/media/audiobooks"
+        ];
+      };
+    };
     jellyfin = {
       after = [ "zfs-import-tank.service" ];
       serviceConfig = {
@@ -142,6 +159,7 @@ in
   users.users = {
     sonarr.extraGroups = [ "media" ];
     radarr.extraGroups = [ "media" ];
+    readarr.extraGroups = [ "media" ];
     jellyfin.extraGroups = [ "media" ];
     bazarr.extraGroups = [ "media" ];
   };
@@ -186,6 +204,7 @@ in
     ports.jellyfin
     ports.sonarr
     ports.radarr
+    ports.readarr
     ports.prowlarr
     ports.qbittorrent
     ports.bazarr

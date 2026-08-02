@@ -25,6 +25,7 @@
             jellyfin = 8096;
             sonarr = 8989;
             radarr = 7878;
+            readarr = 8787;
             prowlarr = 9696;
             bazarr = 6767;
             qbittorrent = 8080;
@@ -42,6 +43,7 @@
             exportarrRadarr = 9708;
             exportarrProwlarr = 9709;
             exportarrBazarr = 9710;
+            exportarrReadarr = 9711;
             stirlingPdf = 8490;
           };
         };

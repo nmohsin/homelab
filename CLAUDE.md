@@ -19,7 +19,7 @@
 
 ## Services
 
-- **Native NixOS**: Sonarr, Radarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), Prometheus + Grafana (`monitoring.nix`)
+- **Native NixOS**: Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), Prometheus + Grafana (`monitoring.nix`)
 - **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
@@ -27,7 +27,7 @@
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
 - Paperless-ngx provides document management with OCR, full-text search, auto-classification — data at `/data/paperless` on ZFS, PostgreSQL backend
 - Nextcloud provides file sync, sharing, and collaboration — data at `/data/nextcloud` on ZFS, PostgreSQL + Redis backend, nginx on port 8085
-- Prometheus scrapes node_exporter (system + ZFS), exportarr instances (arr queue metrics for Sonarr/Radarr/Prowlarr/Bazarr), and cAdvisor (Docker) — all exporter ports are localhost-only, no firewall rules needed
+- Prometheus scrapes node_exporter (system + ZFS), exportarr instances (arr queue metrics for Sonarr/Radarr/Readarr/Prowlarr/Bazarr), and cAdvisor (Docker) — all exporter ports are localhost-only, no firewall rules needed
 - Grafana datasource is provisioned from Nix; dashboards are imported manually via the UI
 - arr API keys in `secrets/arr-api-keys.yaml` are shared between Recyclarr and exportarr — secrets use `mode = "0444"` so exportarr's DynamicUser services can read them
 - Daily auto-upgrade from GitHub flake (07:00 ± 1h, no auto-reboot) — see `auto-update.nix`
@@ -36,8 +36,8 @@
 
 - nadeem: wheel, docker, networkmanager, SSH key auth
 - fiifii: wheel, networkmanager, password auth
-- media group GID 994: sonarr, radarr, bazarr, jellyfin users + qBittorrent container (PGID=994)
-- `/data/downloads`, `/data/media/tv`, `/data/media/movies`: owned `root:media`, mode 775, setgid
+- media group GID 994: sonarr, radarr, readarr, bazarr, jellyfin users + qBittorrent container (PGID=994)
+- `/data/downloads`, `/data/media/tv`, `/data/media/movies`, `/data/media/books`, `/data/media/audiobooks`: owned `root:media`, mode 775, setgid
 
 ## Conventions
 
@@ -71,7 +71,7 @@
 
 ## Gotchas: Services
 
-- Sonarr and Radarr need remote path mappings in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
+- Sonarr, Radarr, and Readarr need remote path mappings in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
 - Jellyseerr integrations (Sonarr, Radarr, Jellyfin) are configured in its web UI after first deploy — no Nix config for API keys
 - Don't set `services.jellyseerr.configDir` — NixOS bug #457739 breaks startup if changed from default
 - Expect `services.jellyseerr` → `services.seerr` module rename in a future nixpkgs update (PR #500782)
