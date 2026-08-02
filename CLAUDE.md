@@ -68,6 +68,7 @@
 
 - Never use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd; combining both prevents containers from starting
 - qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host
+- qBittorrent image is pinned to `4.6.7` because 5.x's `/api/v2/auth/login` returns a 204 empty body instead of the legacy `"Ok."` body, which Readarr (last release v0.4.18.2805, project unmaintained) rejects as an auth failure. Don't bump to 5.x unless Readarr is dropped or replaced with a maintained fork
 
 ## Gotchas: Services
 
