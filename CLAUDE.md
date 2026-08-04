@@ -68,11 +68,11 @@
 
 - Never use `--restart=unless-stopped` with `virtualisation.oci-containers` — NixOS manages restarts via systemd; combining both prevents containers from starting
 - qBittorrent downloads to `/downloads` inside container = `/data/downloads` on host
-- qBittorrent image is pinned to `4.6.7` because 5.x's `/api/v2/auth/login` returns a 204 empty body instead of the legacy `"Ok."` body, which Readarr (last release v0.4.18.2805, project unmaintained) rejects as an auth failure. Don't bump to 5.x unless Readarr is dropped or replaced with a maintained fork
 
 ## Gotchas: Services
 
 - Sonarr, Radarr, and Readarr need remote path mappings in their web UIs: host `localhost`, remote `/downloads`, local `/data/downloads`
+- Readarr's qBittorrent download client integration is broken against qBittorrent 5.x — Readarr rejects the new 204-empty-body auth response and won't be fixed upstream (project unmaintained). Search/metadata/library management still work
 - Jellyseerr integrations (Sonarr, Radarr, Jellyfin) are configured in its web UI after first deploy — no Nix config for API keys
 - Don't set `services.jellyseerr.configDir` — NixOS bug #457739 breaks startup if changed from default
 - Expect `services.jellyseerr` → `services.seerr` module rename in a future nixpkgs update (PR #500782)

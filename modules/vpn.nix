@@ -28,10 +28,7 @@
       };
 
       containers.qbittorrent = {
-        # Pinned to 4.6.7: qBittorrent 5.x's /api/v2/auth/login returns 204
-        # empty body instead of "Ok." body, which breaks Readarr's login
-        # response check (upstream fix stalled since project is unmaintained).
-        image = "lscr.io/linuxserver/qbittorrent:4.6.7";
+        image = "lscr.io/linuxserver/qbittorrent";
         environment = {
           PUID = "1000";
           PGID = "994";
