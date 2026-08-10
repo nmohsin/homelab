@@ -53,6 +53,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 - **Native vs Docker** — native NixOS modules (Jellyfin, Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Paperless-ngx, Nextcloud) are preferred because NixOS manages their users, systemd hardening, and config files properly. Docker is used only where no native module exists or where the container approach is materially simpler (qBittorrent, FlareSolverr, Recyclarr, Homepage, Uptime Kuma).
 - **Recyclarr** — keeping Sonarr and Radarr quality profiles aligned with the TRaSH Guide manually would be a recurring chore prone to drift. Recyclarr automates this by syncing quality profiles and custom formats every 6 hours. Config is inline in `arr.nix`; API keys are in `secrets/arr-api-keys.yaml` (sops-encrypted).
 - **qBittorrent through Gluetun** — routing torrent traffic through a VPN prevents the ISP from seeing it, avoiding throttling and DMCA notices. qBittorrent uses `--network=container:gluetun` so all its traffic exits through Gluetun's ProtonVPN WireGuard tunnel; it cannot accidentally bypass the VPN. The WebUI port (8080) is exposed through Gluetun's port mappings.
+- **qbit-port-sync sidecar** — ProtonVPN's port-forwarded port changes on every VPN reconnect, and a stale port silently breaks incoming peer connections (seeding stalls, swarm health degrades). The `qbit-port-sync` sidecar (event-driven, Go, shares Gluetun's netns) watches Gluetun's `forwarded_port` file and updates qBittorrent's listening port via the Web API in under a second — no manual UI edits, no polling.
 - **Secrets via sops-nix** — secrets need to live somewhere, and keeping them outside the repo means manual copying to the server on every change. sops-nix allows secrets to be encrypted with age keys and committed to the repo safely. At boot, sops-nix decrypts them using the machine's SSH host key — no manual steps needed after a rebuild.
 - **ZFS snapshot policy** — daily (7), weekly (4), monthly (3). Frequent (15-min) and hourly snapshots are disabled because the media workload is write-once: files are large, rarely modified after import, and not worth the storage cost of high-frequency snapshots.
 - **Gluetun starts after Tailscale** — if the WireGuard tunnel comes up first, it can claim routes that Tailscale needs, preventing Tailscale from connecting at boot. Ordering Gluetun after `tailscaled` avoids this conflict.
@@ -107,7 +108,7 @@ modules/
   zfs.nix                   # ZFS pool "tank", auto-snapshots, ZED health alerts to ntfy.sh
   tailscale.nix             # Tailscale VPN client, UDP port 41641, Tailscale SSH
   secrets.nix               # sops-nix config: decrypts protonvpn.conf at boot via SSH host key
-  vpn.nix                   # Docker: Gluetun (ProtonVPN WireGuard) + qBittorrent (uses Gluetun network)
+  vpn.nix                   # Docker: Gluetun (ProtonVPN WireGuard) + qBittorrent (uses Gluetun network) + qbit-port-sync (syncs forwarded port into qBittorrent)
   arr.nix                   # Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin (native NixOS), FlareSolverr + Recyclarr (Docker)
   homepage.nix              # Homepage dashboard (Docker), config written by NixOS activation script
   paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR

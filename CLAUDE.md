@@ -20,8 +20,9 @@
 ## Services
 
 - **Native NixOS**: Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), AudioBookshelf (`audiobookshelf.nix`), Prometheus + Grafana (`monitoring.nix`)
-- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
+- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), qbit-port-sync (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
+- qbit-port-sync watches `/var/lib/gluetun/forwarded_port` (bind-mounted from Gluetun) and pushes the current forwarded port into qBittorrent's Web API. Shares gluetun's netns so it reaches qBittorrent as localhost — relies on qBittorrent's "Bypass authentication for clients on localhost" (default-on in LSIO qBittorrent). If disabled, add `QBIT_USER`/`QBIT_PASS` env vars sourced from sops
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
 - All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
@@ -63,6 +64,8 @@
 - `AllowedIPs` must exclude `100.64.0.0/10` (Tailscale CGNAT range) — including it breaks Tailscale
 - Gluetun/WireGuard configured to start after `tailscaled` to avoid boot ordering conflicts
 - On fresh setup, pull qBittorrent image before Gluetun starts — pulls fail through the VPN: `sudo systemctl stop docker-gluetun && sudo docker pull lscr.io/linuxserver/qbittorrent && sudo systemctl start docker-gluetun`
+- Do not set qBittorrent's listening port manually in the Web UI — qbit-port-sync will overwrite it whenever Gluetun's forwarded port changes. Same reason: don't add UPnP-based port setters, they'll fight the sidecar
+- Gluetun's `VPN_PORT_FORWARDING_STATUS_FILE` must point inside `/tmp/gluetun/` (the shared mount), otherwise qbit-port-sync can't see updates
 
 ## Gotchas: Docker / Containers
 

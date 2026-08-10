@@ -16,9 +16,11 @@
           VPN_TYPE = "wireguard";
           VPN_PORT_FORWARDING = "on";
           VPN_PORT_FORWARDING_PROVIDER = "protonvpn";
+          VPN_PORT_FORWARDING_STATUS_FILE = "/tmp/gluetun/forwarded_port";
         };
         volumes = [
           "/etc/secrets/protonvpn.conf:/gluetun/wireguard/wg0.conf:ro"
+          "/var/lib/gluetun:/tmp/gluetun"
         ];
         ports = [ "${toString ports.qbittorrent}:${toString ports.qbittorrent}" ];
         extraOptions = [
@@ -44,6 +46,30 @@
         ];
         dependsOn = [ "gluetun" ];
       };
+
+      # Watches Gluetun's forwarded_port file and syncs qBittorrent's listen port via WebAPI.
+      # Shares gluetun's netns so it reaches qBittorrent as localhost (bypass-auth works).
+      containers.qbit-port-sync = {
+        image = "ghcr.io/hononeko/qbit-gluetun-sync:latest";
+        environment = {
+          QBIT_ADDR = "http://localhost:8080";
+          PORT_FILE = "/tmp/gluetun/forwarded_port";
+        };
+        volumes = [
+          "/var/lib/gluetun:/tmp/gluetun:ro"
+        ];
+        extraOptions = [
+          "--network=container:gluetun"
+        ];
+        dependsOn = [
+          "gluetun"
+          "qbittorrent"
+        ];
+      };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/gluetun 0755 root root -"
+  ];
 }
