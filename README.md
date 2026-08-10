@@ -26,7 +26,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   ┌─ Downloads ─────────────────────────────────────────┐   │
 │   │  FlareSolverr :8191                                 │   │
 │   │  ┌─ Gluetun (ProtonVPN WireGuard) ──────────────┐   │   │
-│   │  │  qBittorrent :8080                           │   │   │
+│   │  │  qBittorrent :8080   Mousehole :5010         │   │   │
 │   │  └──────────────────────────────────────────────┘   │   │
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Documents ─────────────────────────────────────────┐   │
@@ -67,6 +67,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 | Jellyfin      | 8096 | Native NixOS   | `arr.nix`      |
 | Jellyseerr    | 5055 | Native NixOS   | `arr.nix`      |
 | qBittorrent   | 8080 | Docker/Gluetun | `vpn.nix`      |
+| Mousehole     | 5010 | Docker/Gluetun | `vpn.nix`      |
 | Radarr        | 7878 | Native NixOS   | `arr.nix`      |
 | Sonarr        | 8989 | Native NixOS   | `arr.nix`      |
 | Readarr       | 8787 | Native NixOS   | `arr.nix`      |
@@ -108,7 +109,7 @@ modules/
   zfs.nix                   # ZFS pool "tank", auto-snapshots, ZED health alerts to ntfy.sh
   tailscale.nix             # Tailscale VPN client, UDP port 41641, Tailscale SSH
   secrets.nix               # sops-nix config: decrypts protonvpn.conf at boot via SSH host key
-  vpn.nix                   # Docker: Gluetun (ProtonVPN WireGuard) + qBittorrent (uses Gluetun network) + qbit-port-sync (syncs forwarded port into qBittorrent)
+  vpn.nix                   # Docker: Gluetun (ProtonVPN WireGuard) + qBittorrent (uses Gluetun network) + qbit-port-sync (syncs forwarded port into qBittorrent) + Mousehole (updates MAM dynamic seedbox IP)
   arr.nix                   # Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin (native NixOS), FlareSolverr + Recyclarr (Docker)
   homepage.nix              # Homepage dashboard (Docker), config written by NixOS activation script
   paperless.nix             # Paperless-ngx (native NixOS) — document management with OCR

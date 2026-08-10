@@ -22,7 +22,10 @@
           "/etc/secrets/protonvpn.conf:/gluetun/wireguard/wg0.conf:ro"
           "/var/lib/gluetun:/tmp/gluetun"
         ];
-        ports = [ "${toString ports.qbittorrent}:${toString ports.qbittorrent}" ];
+        ports = [
+          "${toString ports.qbittorrent}:${toString ports.qbittorrent}"
+          "${toString ports.mousehole}:${toString ports.mousehole}"
+        ];
         extraOptions = [
           "--cap-add=NET_ADMIN"
           "--device=/dev/net/tun"
@@ -66,10 +69,34 @@
           "qbittorrent"
         ];
       };
+
+      # Keeps MyAnonaMouse's dynamic seedbox IP in sync with Gluetun's egress IP.
+      # Must share gluetun's netns so update requests originate from the VPN IP
+      # that MAM should register — otherwise the reported IP diverges from
+      # qBittorrent's traffic and MAM flags the session.
+      containers.mousehole = {
+        image = "tmmrtn/mousehole:latest";
+        environment = {
+          TZ = "America/Los_Angeles";
+          MOUSEHOLE_PORT = toString ports.mousehole;
+          MOUSEHOLE_UPDATE_INTERVAL_SECONDS = "300";
+          MOUSEHOLE_ALLOWED_HOSTS = "moyfii.tail083295.ts.net:${toString ports.mousehole},localhost:${toString ports.mousehole}";
+        };
+        volumes = [
+          "/var/lib/mousehole:/var/lib/mousehole"
+        ];
+        extraOptions = [
+          "--network=container:gluetun"
+        ];
+        dependsOn = [ "gluetun" ];
+      };
     };
   };
 
   systemd.tmpfiles.rules = [
     "d /var/lib/gluetun 0755 root root -"
+    "d /var/lib/mousehole 0755 root root -"
   ];
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ ports.mousehole ];
 }

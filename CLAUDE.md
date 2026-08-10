@@ -20,9 +20,10 @@
 ## Services
 
 - **Native NixOS**: Sonarr, Radarr, Readarr, Prowlarr, Bazarr, Jellyfin, Jellyseerr (all in `arr.nix`), Paperless-ngx (`paperless.nix`), Nextcloud (`nextcloud.nix`), Stirling PDF (`stirling-pdf.nix`), AudioBookshelf (`audiobookshelf.nix`), Prometheus + Grafana (`monitoring.nix`)
-- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), qbit-port-sync (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
+- **Docker**: qBittorrent (`vpn.nix`), Gluetun (`vpn.nix`), qbit-port-sync (`vpn.nix`), Mousehole (`vpn.nix`), FlareSolverr (`arr.nix`), Recyclarr (`arr.nix`), Homepage (`homepage.nix`), Uptime Kuma (`monitoring.nix`), cAdvisor (`monitoring.nix`)
 - qBittorrent uses `--network=container:gluetun` — all traffic routes through ProtonVPN
 - qbit-port-sync watches `/var/lib/gluetun/forwarded_port` (bind-mounted from Gluetun) and pushes the current forwarded port into qBittorrent's Web API. Shares gluetun's netns so it reaches qBittorrent as localhost — relies on qBittorrent's "Bypass authentication for clients on localhost" (default-on in LSIO qBittorrent). If disabled, add `QBIT_USER`/`QBIT_PASS` env vars sourced from sops
+- Mousehole (`tmmrtn/mousehole`) keeps MyAnonaMouse's dynamic seedbox IP aligned with Gluetun's current VPN egress IP by periodically calling `t.myanonamouse.net/json/dynamicSeedbox.php`. Web UI on port 5010, exposed through Gluetun's port mapping. Shares gluetun's netns so MAM sees the same source IP as qBittorrent's traffic
 - Homepage config written by NixOS activation script from `homepage.nix` — UI edits do not persist
 - All service links in Homepage use Tailscale FQDN: `http://moyfii.tail083295.ts.net:PORT`
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
@@ -85,6 +86,10 @@
 - Nextcloud upgrades are version-locked (`pkgs.nextcloud33`) — can't skip major versions, bump explicitly
 - AudioBookshelf reads from `/data/media/audiobooks` and `/data/media/books` (ReadOnlyPaths); libraries are configured in the AB web UI, not Nix — state persists in `/var/lib/audiobookshelf`
 - AudioBookshelf has no `/metrics` endpoint (upstream issue advplyr/audiobookshelf#3831) — monitor via Uptime Kuma only, not Prometheus
+- Mousehole state (MAM cookie) lives in `/var/lib/mousehole` — not managed by Nix. Paste the `mam_id` cookie once via the web UI after first deploy
+- MAM session must be created with "Allow session to set dynamic seedbox IP" enabled (Preferences → Security on myanonamouse.net) before Mousehole can update anything
+- MAM also ASN-locks sessions — sticking with ProtonVPN keeps the ASN stable; switching VPN providers requires creating a new MAM session
+- On fresh setup, pull `tmmrtn/mousehole` before Gluetun starts (same VPN-blocks-pulls issue as qBittorrent): `sudo systemctl stop docker-gluetun && sudo docker pull tmmrtn/mousehole && sudo systemctl start docker-gluetun`
 
 ## Gotchas: Users / Auth
 

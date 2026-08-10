@@ -29,6 +29,7 @@
             prowlarr = 9696;
             bazarr = 6767;
             qbittorrent = 8080;
+            mousehole = 5010;
             flaresolverr = 8191;
             homepage = 3000;
             uptimekuma = 3001;

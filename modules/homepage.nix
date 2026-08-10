@@ -55,6 +55,11 @@ let
             href: http://${host}:${toString ports.qbittorrent}
             description: Torrent client (via ProtonVPN)
             ping: http://${host}:${toString ports.qbittorrent}
+        - Mousehole:
+            icon: mdi-mouse
+            href: http://${host}:${toString ports.mousehole}
+            description: MAM dynamic seedbox IP updater
+            ping: http://${host}:${toString ports.mousehole}
         - FlareSolverr:
             icon: flaresolverr.png
             href: http://${host}:${toString ports.flaresolverr}
