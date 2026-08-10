@@ -81,6 +81,9 @@
           MOUSEHOLE_PORT = toString ports.mousehole;
           MOUSEHOLE_UPDATE_INTERVAL_SECONDS = "300";
           MOUSEHOLE_ALLOWED_HOSTS = "moyfii.tail083295.ts.net:${toString ports.mousehole},localhost:${toString ports.mousehole}";
+          # Mousehole >=0.5.0 refuses to boot without auth unless explicitly opted out.
+          # Access to the UI is already gated by tailscale0 (same trust model as qBittorrent).
+          MOUSEHOLE_INSECURE_ALLOW_NO_AUTH = "true";
         };
         volumes = [
           "/var/lib/mousehole:/var/lib/mousehole"
