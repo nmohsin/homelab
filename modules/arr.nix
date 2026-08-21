@@ -60,7 +60,7 @@ in
     readarr.enable = true;
     jellyfin.enable = true;
     bazarr.enable = true;
-    jellyseerr.enable = true;
+    seerr.enable = true;
   };
 
   systemd.services = {
@@ -126,7 +126,6 @@ in
         NoNewPrivileges = true;
         PrivateTmp = true;
         ProtectHome = true;
-        ProtectSystem = "strict";
         ReadWritePaths = [
           "/var/lib/jellyfin"
           "/var/cache/jellyfin"
@@ -149,7 +148,7 @@ in
         ];
       };
     };
-    jellyseerr = {
+    seerr = {
       serviceConfig = {
         NoNewPrivileges = true;
         PrivateTmp = true;
