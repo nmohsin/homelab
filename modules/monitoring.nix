@@ -83,6 +83,7 @@
 
   services.grafana = {
     enable = true;
+    settings.security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
     settings.server = {
       http_addr = "0.0.0.0";
       http_port = ports.grafana;
