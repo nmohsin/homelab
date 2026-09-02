@@ -84,7 +84,7 @@
 - Nextcloud's NixOS module owns the nginx config — adding another nginx-backed service requires coordinating virtual hosts
 - Nextcloud `adminpassFile` is only read on first install; change password via web UI or `nextcloud-occ user:resetpassword admin`
 - Nextcloud upgrades are version-locked (`pkgs.nextcloud33`) — can't skip major versions, bump explicitly
-- AudioBookshelf reads from `/data/media/audiobooks` and `/data/media/books` (ReadOnlyPaths); libraries are configured in the AB web UI, not Nix — state persists in `/var/lib/audiobookshelf`
+- AudioBookshelf reads/writes `/data/media` (ReadWritePaths) and `/var/lib/audiobookshelf`; libraries are configured in the AB web UI, not Nix — state persists in `/var/lib/audiobookshelf`
 - AudioBookshelf has no `/metrics` endpoint (upstream issue advplyr/audiobookshelf#3831) — monitor via Uptime Kuma only, not Prometheus
 - Mousehole state (MAM cookie) lives in `/var/lib/mousehole` — not managed by Nix. Paste the `mam_id` cookie once via the web UI after first deploy
 - MAM session must be created with "Allow session to set dynamic seedbox IP" enabled (Preferences → Security on myanonamouse.net) before Mousehole can update anything

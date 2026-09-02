@@ -15,8 +15,10 @@
       PrivateTmp = true;
       ProtectHome = true;
       ProtectSystem = "strict";
-      ReadWritePaths = [ "/var/lib/audiobookshelf" ];
-      ReadOnlyPaths = [ "/data/media" ];
+      ReadWritePaths = [
+        "/var/lib/audiobookshelf"
+        "/data/media"
+      ];
     };
   };
 
