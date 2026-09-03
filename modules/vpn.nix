@@ -43,6 +43,7 @@
           };
           volumes = [
             "/data/downloads:/downloads"
+            "/data/media/audiobooks:/audiobooks"
             "/data/qbittorrent/config:/config"
           ];
           extraOptions = [
