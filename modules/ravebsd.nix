@@ -4,8 +4,6 @@
     image = "ghcr.io/idleendeavor/ravebsd:latest";
     environment = {
       PORT = toString ports.ravebsd;
-      PUID = "1000";
-      PGID = "994";
     };
     volumes = [
       "/var/lib/ravebsd:/data"
@@ -15,6 +13,7 @@
     ];
     extraOptions = [
       "--network=host"
+      "--user=1000:994"
       "--shm-size=512m"
       "--security-opt=seccomp=${./files/seccomp-chromium.json}"
     ];
