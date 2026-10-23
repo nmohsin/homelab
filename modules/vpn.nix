@@ -99,6 +99,10 @@
     };
   };
 
+  systemd.services."docker-qbittorrent".serviceConfig.ExecStartPre = [
+    "-/bin/rm -f /data/qbittorrent/config/qBittorrent/lockfile"
+  ];
+
   systemd.tmpfiles.rules = [
     "d /var/lib/gluetun 0755 root root -"
     "d /var/lib/mousehole 0755 root root -"
