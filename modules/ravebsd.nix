@@ -9,8 +9,8 @@
     };
     volumes = [
       "/var/lib/ravebsd:/data"
-      "/data/media/books:/books"
-      "/data/media/audiobooks:/audiobooks"
+      "/data/media/books:/data/media/books"
+      "/data/media/audiobooks:/data/media/audiobooks"
       "/data/downloads:/downloads"
     ];
     extraOptions = [
