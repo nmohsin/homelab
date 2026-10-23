@@ -39,21 +39,22 @@ let
             href: http://${host}:${toString ports.bazarr}
             description: Subtitles
             ping: http://${host}:${toString ports.bazarr}
-        - Readarr:
-            icon: readarr.png
-            href: http://${host}:${toString ports.readarr}
-            description: Ebook and audiobook downloader
-            ping: http://${host}:${toString ports.readarr}
-        - AudioBookshelf:
-            icon: audiobookshelf.png
-            href: http://${host}:${toString ports.audiobookshelf}
-            description: Audiobook and podcast server
-            ping: http://${host}:${toString ports.audiobookshelf}
+    - Books:
         - RaveBSD:
             icon: mdi-book-search
             href: http://${host}:${toString ports.ravebsd}
             description: Book and audiobook search
             ping: http://${host}:${toString ports.ravebsd}
+        - AudioBookshelf:
+            icon: audiobookshelf.png
+            href: http://${host}:${toString ports.audiobookshelf}
+            description: Audiobook and podcast server
+            ping: http://${host}:${toString ports.audiobookshelf}
+        - Readarr:
+            icon: readarr.png
+            href: http://${host}:${toString ports.readarr}
+            description: Ebook and audiobook downloader
+            ping: http://${host}:${toString ports.readarr}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png
