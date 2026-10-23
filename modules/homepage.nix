@@ -138,8 +138,13 @@ in
     volumes = [
       "/var/lib/homepage:/app/config"
     ];
-    ports = [ "${toString ports.homepage}:${toString ports.homepage}" ];
-    extraOptions = [ ];
+    extraOptions = [ "--network=host" ];
+  };
+
+  # Ensure Homepage starts after Tailscale so MagicDNS is available for ping checks.
+  systemd.services."docker-homepage" = {
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
   };
 
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ ports.homepage ];
