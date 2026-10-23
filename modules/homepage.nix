@@ -113,6 +113,10 @@ let
     hideVersion: true
     language: en
     layout:
+      Media:
+      Books:
+      Downloads:
+      Documents:
       Monitoring:
         style: row
         columns: 3
