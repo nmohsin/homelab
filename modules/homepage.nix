@@ -14,7 +14,7 @@ let
             href: http://${host}:${toString ports.jellyfin}
             description: Media server
             ping: http://${host}:${toString ports.jellyfin}
-        - Jellyseerr:
+        - Seerr:
             icon: jellyseerr.png
             href: http://${host}:${toString ports.jellyseerr}
             description: Media requests
