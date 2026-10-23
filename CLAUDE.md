@@ -29,6 +29,7 @@
 - Recyclarr syncs TRaSH Guide quality profiles/custom formats into Sonarr+Radarr every 6h — config in `arr.nix`, API keys in `secrets/arr-api-keys.yaml`
 - Paperless-ngx provides document management with OCR, full-text search, auto-classification — data at `/data/paperless` on ZFS, PostgreSQL backend
 - Nextcloud provides file sync, sharing, and collaboration — data at `/data/nextcloud` on ZFS, PostgreSQL + Redis backend, nginx on port 8085
+- Storyteller (`storyteller.nix`) syncs narrated ebooks (text + audio alignment) — data at `/var/lib/storyteller`, secret key in `secrets/storyteller.yaml` (sops). Must create the secret before first deploy: `sops secrets/storyteller.yaml`, add `storyteller_secret_key: <openssl rand -base64 32 output>`
 - RaveBSD (`ravebsd.nix`) provides self-hosted book/audiobook search across LibGen, Anna's Archive, Z-Library, etc. — downloads directly to server and shelves into `/data/media/books` and `/data/media/audiobooks`. qBittorrent integration configured in RaveBSD's admin panel after first deploy (URL: `http://localhost:8080`, bypass-auth works since it shares the host network). Z-Lib/Mobilism credentials set in admin panel under Libraries. seccomp profile stored at `modules/files/seccomp-chromium.json`
 - Prometheus scrapes node_exporter (system + ZFS), exportarr instances (arr queue metrics for Sonarr/Radarr/Readarr/Prowlarr/Bazarr), and cAdvisor (Docker) — all exporter ports are localhost-only, no firewall rules needed
 - Grafana datasource is provisioned from Nix; dashboards are imported manually via the UI

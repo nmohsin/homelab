@@ -17,6 +17,7 @@
     ./modules/stirling-pdf.nix
     ./modules/audiobookshelf.nix
     ./modules/ravebsd.nix
+    ./modules/storyteller.nix
     ./modules/auto-update.nix
   ];
 

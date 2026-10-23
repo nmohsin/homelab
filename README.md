@@ -22,6 +22,7 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 │   │  Jellyfin :8096  Sonarr :8989  Radarr :7878         │   │
 │   │  Readarr :8787   Prowlarr :9696  Bazarr :6767       │   │
 │   │  Jellyseerr :5055  AudioBookshelf :13378            │   │
+│   │  RaveBSD :8888    Storyteller :8001                 │   │
 │   └─────────────────────────────────────────────────────┘   │
 │   ┌─ Downloads ─────────────────────────────────────────┐   │
 │   │  FlareSolverr :8191                                 │   │
@@ -78,6 +79,8 @@ NixOS configuration for the family homelab server (hostname: `moyfii`).
 | Paperless-ngx | 28981| Native NixOS   | `paperless.nix`  |
 | Stirling PDF  | 8490 | Native NixOS   | `stirling-pdf.nix` |
 | AudioBookshelf | 13378 | Native NixOS  | `audiobookshelf.nix` |
+| RaveBSD       | 8888 | Docker         | `ravebsd.nix`      |
+| Storyteller   | 8001 | Docker         | `storyteller.nix`  |
 | Uptime Kuma   | 3001 | Docker         | `monitoring.nix` |
 | Grafana       | 3030 | Native NixOS   | `monitoring.nix` |
 | Prometheus    | 9090 | Native NixOS   | `monitoring.nix` |
@@ -117,6 +120,8 @@ modules/
   stirling-pdf.nix          # Stirling PDF (native NixOS) — local PDF tools (merge, split, convert, OCR)
   audiobookshelf.nix        # AudioBookshelf (native NixOS) — audiobook and podcast server, reads /data/media
   monitoring.nix            # Prometheus + Grafana (native NixOS), node_exporter, exportarr x5, cAdvisor (Docker), Uptime Kuma (Docker)
+  ravebsd.nix               # RaveBSD book/audiobook search (Docker)
+  storyteller.nix           # Storyteller narrated ebook sync (Docker), secret key in secrets/storyteller.yaml
   auto-update.nix           # Daily auto-upgrade from GitHub flake (no auto-reboot)
 ```
 

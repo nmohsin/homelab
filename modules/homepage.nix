@@ -50,6 +50,11 @@ let
             href: http://${host}:${toString ports.audiobookshelf}
             description: Audiobook and podcast server
             ping: http://${host}:${toString ports.audiobookshelf}
+        - Storyteller:
+            icon: mdi-book-play
+            href: http://${host}:${toString ports.storyteller}
+            description: Narrated ebook sync
+            ping: http://${host}:${toString ports.storyteller}
         - Readarr:
             icon: readarr.png
             href: http://${host}:${toString ports.readarr}

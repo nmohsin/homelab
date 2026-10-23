@@ -48,6 +48,7 @@
             stirlingPdf = 8490;
             audiobookshelf = 13378;
             ravebsd = 8888;
+            storyteller = 8001;
           };
         };
         modules = [
