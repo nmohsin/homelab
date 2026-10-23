@@ -112,6 +112,10 @@ let
     headerStyle: clean
     hideVersion: true
     language: en
+    layout:
+      Monitoring:
+        style: row
+        columns: 3
   '';
 
   widgetsYaml = pkgs.writeText "homepage-widgets.yaml" ''
