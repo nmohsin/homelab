@@ -126,6 +126,11 @@
     };
   };
 
+  systemd.services."docker-uptime-kuma" = {
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+  };
+
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
     ports.uptimekuma
     ports.prometheus
