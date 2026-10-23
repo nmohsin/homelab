@@ -16,6 +16,7 @@
     ./modules/nextcloud.nix
     ./modules/stirling-pdf.nix
     ./modules/audiobookshelf.nix
+    ./modules/ravebsd.nix
     ./modules/auto-update.nix
   ];
 

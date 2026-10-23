@@ -49,6 +49,11 @@ let
             href: http://${host}:${toString ports.audiobookshelf}
             description: Audiobook and podcast server
             ping: http://${host}:${toString ports.audiobookshelf}
+        - RaveBSD:
+            icon: mdi-book-search
+            href: http://${host}:${toString ports.ravebsd}
+            description: Book and audiobook search
+            ping: http://${host}:${toString ports.ravebsd}
     - Downloads:
         - qBittorrent:
             icon: qbittorrent.png

@@ -47,6 +47,7 @@
             exportarrReadarr = 9711;
             stirlingPdf = 8490;
             audiobookshelf = 13378;
+            ravebsd = 8888;
           };
         };
         modules = [
