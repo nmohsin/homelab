@@ -156,6 +156,7 @@ in
     };
     volumes = [
       "/var/lib/homepage:/app/config"
+      "/etc/resolv.conf:/etc/resolv.conf:ro"
     ];
     extraOptions = [ "--network=host" ];
   };
