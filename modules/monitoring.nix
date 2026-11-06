@@ -106,7 +106,10 @@
   virtualisation.oci-containers.containers = {
     uptime-kuma = {
       image = "louislam/uptime-kuma:1";
-      volumes = [ "/var/lib/uptime-kuma:/app/data" ];
+      volumes = [
+        "/var/lib/uptime-kuma:/app/data"
+        "/etc/resolv.conf:/etc/resolv.conf:ro"
+      ];
       extraOptions = [ "--network=host" ];
     };
     cadvisor = {
