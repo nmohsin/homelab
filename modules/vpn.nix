@@ -100,7 +100,7 @@
   };
 
   systemd.services."docker-qbittorrent".serviceConfig.ExecStartPre = [
-    "-/bin/rm -f /data/qbittorrent/config/qBittorrent/lockfile"
+    "-${pkgs.coreutils}/bin/rm -f /data/qbittorrent/config/qBittorrent/lockfile"
   ];
 
   systemd.tmpfiles.rules = [
