@@ -44,6 +44,7 @@
           volumes = [
             "/data/downloads:/downloads"
             "/data/media/audiobooks:/audiobooks"
+            "/data/media/books:/books"
             "/data/qbittorrent/config:/config"
           ];
           extraOptions = [
